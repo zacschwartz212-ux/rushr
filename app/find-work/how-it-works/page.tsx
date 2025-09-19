@@ -42,11 +42,11 @@ export default function HowItWorksForProsPage(){
             </div>
 
             <h1 className="mt-3 text-3xl md:text-4xl font-bold text-ink dark:text-white">
-              How Housecall works for contractors
+              How Rushr works for contractors
             </h1>
             <p className="mt-2 max-w-2xl text-slate-700 dark:text-slate-300">
               Find work without the noise. Bid clearly, win fairly, and keep everything—from
-              messages to documents—in one place. Housecall is free to use; a small success fee is paid after a completed job. Signals is optional.
+              messages to documents—in one place. Rushr is free to use; a small success fee is paid after a completed job. Signals is optional.
             </p>
 
             <div className="mt-5 flex flex-wrap items-center gap-2">

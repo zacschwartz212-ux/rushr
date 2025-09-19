@@ -46,6 +46,9 @@ export default function Header() {
       'border-[var(--brand-border)] text-[var(--brand-text)] hover:bg-[var(--brand-hover)] focus:ring-[var(--brand-ring)]',
   }
 
+  // For local development, use relative paths instead of cross-site URLs
+  const isLocalDev = !process.env.NEXT_PUBLIC_PRO_URL && !process.env.NEXT_PUBLIC_MAIN_URL
+
   // Cross-site base URLs (env overrides with sane local fallbacks)
   const PRO_HOME  = process.env.NEXT_PUBLIC_PRO_URL  || 'http://pro.localhost:3000'
   const MAIN_HOME = process.env.NEXT_PUBLIC_MAIN_URL || 'http://localhost:3000'
@@ -54,9 +57,9 @@ export default function Header() {
   const join = (base: string, path: string) =>
     base.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '')
 
-  // Helpers to target the right site
-  const toMain = (p: string) => join(MAIN_HOME, p)
-  const toPro  = (p: string) => join(PRO_HOME, p)
+  // Helpers to target the right site - use relative paths in local dev
+  const toMain = (p: string) => isLocalDev ? p : join(MAIN_HOME, p)
+  const toPro  = (p: string) => isLocalDev ? p : join(PRO_HOME, p)
 
   // External-safe navigation (absolute URLs go via full page load)
   const go = (href: string) => {
@@ -101,7 +104,9 @@ export default function Header() {
   const displayName = hydrated ? (state?.user?.name || 'User') : 'Sign in'
 
   // Role-aware dashboard target (contractor -> pro; homeowner -> main)
-  const dashboardHref = role === 'CONTRACTOR' ? toPro('/dashboard')
+  // In local dev, just use /dashboard for all roles
+  const dashboardHref = isLocalDev ? '/dashboard'
+                     : role === 'CONTRACTOR' ? toPro('/dashboard')
                      : role === 'HOMEOWNER' ? toMain('/dashboard')
                      : toMain('/dashboard')
 
@@ -191,7 +196,7 @@ export default function Header() {
   // Route menus to their owning site (absolute URLs)
   const findProItems = [
     { label: 'Post a Job',            href: toMain('/post-job') },
-  { label: 'Emergency Request', href: toMain('/post-job/emergency') },
+    { label: 'Emergency Request',     href: toMain('/emergency') },
     { label: 'Search for a Pro',      href: toMain('/find-pro') },
     { label: 'How it Works',          href: toMain('/how-it-works') },
   ]
@@ -368,7 +373,7 @@ export default function Header() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setShowAuth(false)} />
           <div className="relative z-10 card p-5 w-[92vw] max-w-md shadow-xl">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-ink dark:text-white">Welcome to Housecall</h3>
+              <h3 className="text-lg font-semibold text-ink dark:text-white">Welcome to Rushr</h3>
               <button className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => setShowAuth(false)} aria-label="Close">
                 ✕
               </button>

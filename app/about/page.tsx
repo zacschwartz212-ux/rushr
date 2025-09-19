@@ -22,7 +22,7 @@ export default function AboutPage(){
               Home projects, without the headache.
             </h1>
             <p className="mt-3 max-w-2xl text-slate-700 dark:text-slate-300">
-              Housecall connects homeowners with vetted local pros — fast, fair, and frustration-free.
+              Rushr connects homeowners with vetted local pros — fast, fair, and frustration-free.
               Post in minutes, compare transparent quotes, and hire with confidence.
               Pros get Signals to jump on high-intent work first.
             </p>
@@ -48,7 +48,7 @@ export default function AboutPage(){
             <div>
               <h2 className="text-2xl font-semibold text-ink dark:text-white">Our mission</h2>
               <p className="mt-2 text-slate-700 dark:text-slate-300">
-                Make home projects simple and transparent for everyone. Housecall reduces
+                Make home projects simple and transparent for everyone. Rushr reduces
                 back-and-forth, standardizes quotes, and gives pros the tools to respond fast.
               </p>
 
@@ -167,7 +167,7 @@ export default function AboutPage(){
         <div className="container-max py-10 md:py-14">
           <h3 className="text-center text-2xl font-semibold text-ink dark:text-white">How we make money</h3>
           <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-slate-700 dark:text-slate-300">
-            Housecall is free for homeowners. Contractors use the platform for free and pay a small success fee after a completed job.
+            Rushr is free for homeowners. Contractors use the platform for free and pay a small success fee after a completed job.
             Signals is an optional subscription for instant alerts.
           </p>
 
@@ -273,7 +273,7 @@ export default function AboutPage(){
       <section className="section">
         <div className="card p-8 md:p-10 text-center">
           <h3 className="text-xl md:text-2xl font-semibold text-ink dark:text-white">
-            Ready to try Housecall?
+            Ready to try Rushr?
           </h3>
           <p className="mt-2 text-slate-700 dark:text-slate-300">
             Post your project or start winning jobs with Signals.
@@ -533,17 +533,17 @@ const PRO_STEPS = [
 ]
 
 const FAQ_ITEMS = [
-  { q: 'What is Housecall?', a: 'Housecall connects homeowners with local, verified contractors. Post your job, compare quotes, and manage everything in one place.' },
-  { q: 'Is Housecall free to use for homeowners?', a: 'Yes. Posting jobs, chatting with pros, and receiving quotes is 100 percent free.' },
-  { q: 'How do pros get work on Housecall?', a: 'Contractors can browse jobs in their trade and service area, or get matched instantly when homeowners post a job.' },
+  { q: 'What is Rushr?', a: 'Rushr connects homeowners with local, verified contractors. Post your job, compare quotes, and manage everything in one place.' },
+  { q: 'Is Rushr free to use for homeowners?', a: 'Yes. Posting jobs, chatting with pros, and receiving quotes is 100 percent free.' },
+  { q: 'How do pros get work on Rushr?', a: 'Contractors can browse jobs in their trade and service area, or get matched instantly when homeowners post a job.' },
   { q: 'How do I know contractors are trustworthy?', a: 'Every pro maintains a public profile with ratings, past work photos, and verification badges. You can review before you hire.' },
   { q: 'Can I share photos or videos of my project?', a: 'Yes. Attach them in messages to help pros quote more accurately and save time on site.' },
-  { q: 'What is Housecall Signals?', a: 'Signals is our real time alert system. Contractors get notified about permits, violations, or inspections in their area before anyone else.' },
+  { q: 'What is Rushr Signals?', a: 'Signals is our real time alert system. Contractors get notified about permits, violations, or inspections in their area before anyone else.' },
   { q: 'Do I have to accept the first quote I get?', a: 'No. You can accept, decline, or request changes. You are always in control.' },
-  { q: 'How do contractors pay for Housecall?', a: 'Contractors do not pay per lead. Housecall charges a small success fee only when work is secured through the platform.' },
+  { q: 'How do contractors pay for Rushr?', a: 'Contractors do not pay per lead. Rushr charges a small success fee only when work is secured through the platform.' },
   { q: 'How quickly will I get quotes?', a: 'Many homeowners see first responses within minutes. For urgent jobs, use the Emergency tag to alert nearby pros.' },
-  { q: 'Can I hire a pro outside of Housecall?', a: 'We strongly encourage keeping the project on platform. It keeps your messages, quotes, and agreements organized, and helps keep the service free for homeowners.' },
-  { q: 'How does Housecall handle my personal data?', a: 'Your contact details stay private. Pros message you directly through the platform until you choose to share more.' },
+  { q: 'Can I hire a pro outside of Rushr?', a: 'We strongly encourage keeping the project on platform. It keeps your messages, quotes, and agreements organized, and helps keep the service free for homeowners.' },
+  { q: 'How does Rushr handle my personal data?', a: 'Your contact details stay private. Pros message you directly through the platform until you choose to share more.' },
   { q: 'Can pros filter jobs by type and location?', a: 'Yes. Contractors set their trade, service radius, and preferences to only see relevant leads.' },
   { q: 'What if a job does not go as planned?', a: 'Use the built in messaging and quote history as a record. We encourage transparent communication and can provide support if issues arise.' },
   { q: 'How do ratings work?', a: 'After each job, homeowners leave a 1 to 5 star rating and optional review. Higher rated pros appear more prominently in search and featured lists.' },

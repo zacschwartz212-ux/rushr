@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useApp } from '../lib/state'
 
 type Role = 'homeowner' | 'pro'
@@ -23,8 +23,20 @@ export default function DemoAuthSwitcher() {
   const app = useApp() as any
   const { signIn, signOut, role } = app || {}
 
+  // State for hydration-safe role display
+  const [shownRole, setShownRole] = useState<string>('signed out')
+  const [isClient, setIsClient] = useState(false)
+
+  // Effect to update role after hydration
+  useEffect(() => {
+    setIsClient(true)
+    const storedRole = localStorage.getItem('demoRole') || (globalThis as any).__HOUSECALL_DEMO_ROLE || 'signed out'
+    setShownRole(role ?? storedRole)
+  }, [role])
+
   const setRole = (r: Role) => {
     setDemoRole(r)
+    setShownRole(r)
     if (typeof signIn === 'function') {
       // cast to any to match your AppContextValue signature
       signIn({ name: r === 'pro' ? 'Pro Demo' : 'Homeowner Demo', role: r } as any)
@@ -33,14 +45,11 @@ export default function DemoAuthSwitcher() {
 
   const clearRole = () => {
     setDemoRole(undefined)
+    setShownRole('signed out')
     if (typeof signOut === 'function') signOut()
   }
 
-  const shown =
-    role ??
-    (typeof window !== 'undefined'
-      ? (localStorage.getItem('demoRole') || (globalThis as any).__HOUSECALL_DEMO_ROLE || 'signed out')
-      : 'signed out')
+  const shown = isClient ? shownRole : 'signed out'
 
   return (
     <div className="fixed bottom-4 right-4 z-40 rounded-xl border bg-white p-2 shadow">

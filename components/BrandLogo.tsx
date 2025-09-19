@@ -15,7 +15,7 @@ export default function BrandLogo({
         {/* Light mode wordmark */}
         <Image
           src="/housecall-wordmark.png"
-          alt="Housecall"
+          alt="Rushr"
           width={w}
           height={size}
           priority
@@ -24,7 +24,7 @@ export default function BrandLogo({
         {/* Dark mode wordmark (optional). If you didn’t add it, remove this line. */}
         <Image
           src="/housecall-wordmark-dark.png"
-          alt="Housecall"
+          alt="Rushr"
           width={w}
           height={size}
           priority
@@ -39,7 +39,7 @@ export default function BrandLogo({
     <span className={`inline-flex items-center ${className}`}>
       <Image
         src="/housecall-icon.png"
-        alt="Housecall"
+        alt="Rushr"
         width={size}
         height={size}
         priority

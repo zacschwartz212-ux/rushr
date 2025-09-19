@@ -2,7 +2,7 @@ import * as React from 'react'
 
 export default function LogoMark({
   className,
-  title = 'Housecall',
+  title = 'Rushr',
 }: { className?: string; title?: string }) {
   return (
     <svg

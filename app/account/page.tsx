@@ -595,7 +595,7 @@ function PreferencesSection({ role, onSaved }:{ role:'HOMEOWNER'|'CONTRACTOR'; o
   return (
     <section className="card p-4">
       <h2 className="text-lg font-semibold text-ink dark:text-white mb-2">Preferences</h2>
-      <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">Customize how Housecall works for you.</p>
+      <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">Customize how Rushr works for you.</p>
 
       <div className="grid md:grid-cols-2 gap-4">
         {role==='CONTRACTOR' ? (
@@ -677,7 +677,7 @@ function DangerZoneSection({ onExport, onDelete }:{ onExport:()=>void; onDelete:
         <div className="flex items-center justify-between rounded-xl border border-slate-200 dark:border-slate-800 p-3">
           <div>
             <div className="font-medium text-ink dark:text-white text-sm">Export my data</div>
-            <div className="text-xs text-slate-500">Download a copy of your Housecall data.</div>
+            <div className="text-xs text-slate-500">Download a copy of your Rushr data.</div>
           </div>
           <button className="btn" onClick={onExport}>Export</button>
         </div>

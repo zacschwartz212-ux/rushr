@@ -9,7 +9,7 @@ import { headers as nextHeaders } from 'next/headers'
 import React from 'react'
 
 export const metadata: Metadata = {
-  title: 'Housecall',
+  title: 'Rushr',
   description: 'Linking Homeowners with Local Pros Instantly',
 }
 

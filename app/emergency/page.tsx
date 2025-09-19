@@ -18,8 +18,8 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Emergency Help | Housecall",
-  description: "How Housecall emergency works: what to expect and what you'll need. Post once and verified pros respond fast.",
+  title: "Emergency Help | Rushr",
+  description: "How Rushr emergency works: what to expect and what you'll need. Post once and verified pros respond fast.",
 }
 
 // ---------- Theme helpers ----------
@@ -317,7 +317,7 @@ export default async function EmergencyPage({ searchParams }: { searchParams?: {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'Service',
-            name: 'Housecall Emergency',
+            name: 'Rushr Emergency',
             serviceType: 'Emergency home repair',
           }),
         }}

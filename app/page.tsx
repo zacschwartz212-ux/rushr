@@ -15,16 +15,22 @@ import {
   XCircle,
   Sparkles,
   BadgeCheck,
-  Home,
+  Home as HomeIcon,
   Wrench,
   Lightbulb,
   ShowerHead,
-  Ruler,
   Wind,
-  Leaf,
+  Car,
+  Lock,
+  Droplets,
   ArrowRight,
-  AlarmClock,
   Siren,
+  Hammer,
+  KeyRound,
+  Battery,
+  Settings,
+  Leaf,
+  Bug,
 } from 'lucide-react'
 
 /* ----------------------------------------------------------------
@@ -40,17 +46,34 @@ export default function HomePage() {
     <div className="relative min-h-screen overflow-clip bg-gray-50">
       <GradientMesh />
 
-      <EmergencySpotlight />
+      {/* HERO */}
       <HeroHome />
+
+      {/* STATS */}
       <StatStrip />
-      <CategoryShowcaseDense />
+
+      {/* POPULAR EMERGENCIES (Home / Auto / General) */}
+      <PopularEmergencies />
+
+      {/* HOW IT WORKS */}
       <HowItWorksHome />
+
+      {/* GEO */}
       <GeoBanner />
-      <ProjectStarter />
+
+      {/* FEATURED PROS */}
       <FeaturedPros />
-      <TrustAndSafetySideBySide />
+
+      {/* TRUST & SAFETY */}
+      <TrustAndSafetyEqual />
+
+      {/* TESTIMONIALS */}
       <TestimonialsHome />
+
+      {/* FINAL CTA */}
       <FinalCTAHome />
+
+      {/* MOBILE STICKY CTA */}
       <MobileStickyCTAHome />
 
       <LocalKeyframes />
@@ -59,10 +82,10 @@ export default function HomePage() {
 }
 
 /* -------------------------------------------
-   HERO — spotlight, floating trust badges
+   HERO — keep layout, swap copy
 -------------------------------------------- */
 function HeroHome() {
-  const [pos, setPos] = useState<{x:number;y:number}>({x:0,y:0})
+  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
   const onMove = (e: React.MouseEvent) => {
     const r = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
     setPos({ x: e.clientX - r.left, y: e.clientY - r.top })
@@ -73,7 +96,11 @@ function HeroHome() {
       {/* Spotlight follows cursor */}
       <motion.div
         className="pointer-events-none absolute -z-10 h-72 w-72 rounded-full"
-        style={{ left: pos.x - 140, top: pos.y - 140, background: 'radial-gradient(closest-side, rgba(16,185,129,.22), transparent 70%)' }}
+        style={{
+          left: pos.x - 140,
+          top: pos.y - 140,
+          background: 'radial-gradient(closest-side, rgba(16,185,129,.22), transparent 70%)',
+        }}
         animate={{ scale: [1, 1.08, 1], opacity: [0.65, 0.9, 0.65] }}
         transition={{ duration: 6, repeat: Infinity }}
       />
@@ -87,7 +114,7 @@ function HeroHome() {
             transition={{ duration: 0.5 }}
             className="text-4xl font-black tracking-tight text-gray-900 md:text-6xl"
           >
-            Hire the right pro without the hassle
+            Urgent? We’re built for that.
           </motion.h1>
 
           <motion.p
@@ -96,7 +123,7 @@ function HeroHome() {
             transition={{ duration: 0.6, delay: 0.08 }}
             className="mt-4 max-w-xl text-lg text-gray-600"
           >
-            Post your job once. Compare quotes, photos, and availability in one place. Message pros directly and book fast.
+            Just one tap to book an on-call pro with a clear hourly rate and time-verified billing.
           </motion.p>
 
           <motion.div
@@ -105,19 +132,19 @@ function HeroHome() {
             transition={{ duration: 0.6, delay: 0.16 }}
             className="mt-8 flex flex-wrap items-center gap-3"
           >
-            <Link href="/post-job" className="inline-flex">
+            <Link href="/post-job?urgent=1" className="inline-flex">
               <Button size="lg" className={`${homeBg} text-white ${homeRing} hover:opacity-95`}>
-                Post a job
+                Book now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/find-pro" className="inline-flex">
+            <Link href="/how-it-works" className="inline-flex">
               <Button
                 size="lg"
                 variant="outline"
                 className="border-[var(--home)] text-[var(--home)] hover:bg-[color:rgb(16_185_129_/_0.08)] focus-visible:ring-[var(--home)]"
               >
-                Browse local pros
+                How it works
               </Button>
             </Link>
           </motion.div>
@@ -125,12 +152,12 @@ function HeroHome() {
           {/* Floating trust badges */}
           <div className="mt-6 flex flex-wrap gap-3">
             <FloatingBadge icon={<BadgeCheck className="h-4 w-4" />} text="Verified pros" delay={0} />
-            <FloatingBadge icon={<Sparkles className="h-4 w-4" />} text="Same-day replies" delay={0.15} />
-            <FloatingBadge icon={<ShieldCheck className="h-4 w-4" />} text="Hire with confidence" delay={0.3} />
+            <FloatingBadge icon={<ShieldCheck className="h-4 w-4" />} text="Clear hourly rates" delay={0.15} />
+            <FloatingBadge icon={<Siren className="h-4 w-4" />} text="Start & end times verified" delay={0.3} />
           </div>
         </div>
 
-        {/* Right: stacked preview cards */}
+        {/* Right: UI preview cards (kept) */}
         <div className="relative">
           <StackedPreview />
         </div>
@@ -139,7 +166,7 @@ function HeroHome() {
   )
 }
 
-function FloatingBadge({ icon, text, delay=0 }: { icon: React.ReactNode; text: string; delay?: number }) {
+function FloatingBadge({ icon, text, delay = 0 }: { icon: React.ReactNode; text: string; delay?: number }) {
   return (
     <motion.div
       className="inline-flex items-center gap-2 rounded-full border border-emerald-200/70 bg-white/70 px-3 py-1 text-sm text-emerald-900 backdrop-blur"
@@ -165,15 +192,11 @@ function StackedPreview() {
       >
         <div className="mb-2 flex items-center gap-2 text-sm text-gray-600">
           <MessageSquare className={`${homeText} h-4 w-4`} />
-          Direct messages
+          Diagnostic chat/video
         </div>
         <div className="space-y-2 text-sm">
-          <div className="max-w-[85%] rounded-lg bg-gray-100 px-3 py-2 text-gray-800">
-            Hi! Small leak under the sink - can you help?
-          </div>
-          <div className={`ml-auto max-w-[85%] rounded-lg ${homeBg} px-3 py-2 text-white`}>
-            Sure - send a photo & ZIP?
-          </div>
+          <div className="max-w-[85%] rounded-lg bg-gray-100 px-3 py-2 text-gray-800">Quick leak under the sink — what’s the ETA?</div>
+          <div className={`ml-auto max-w-[85%] rounded-lg ${homeBg} px-3 py-2 text-white`}>I can be there today. Hourly is $125. Want a quick video call?</div>
         </div>
       </motion.div>
 
@@ -184,13 +207,13 @@ function StackedPreview() {
         transition={{ duration: 0.55, delay: 0.2 }}
       >
         <div className="flex items-center justify-between">
-          <div className="text-sm font-semibold text-gray-800">Quote preview</div>
-          <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">24m avg to first reply</span>
+          <div className="text-sm font-semibold text-gray-800">Estimate</div>
+          <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Approve first</span>
         </div>
         <div className="mt-2 h-2 overflow-hidden rounded bg-emerald-100">
           <div className="h-2 w-2/3 bg-[var(--home)]" />
         </div>
-        <div className="mt-2 text-xs text-gray-500">Compare quotes side-by-side in messages</div>
+        <div className="mt-2 text-xs text-gray-500">Hourly labor + agreed parts/materials</div>
       </motion.div>
 
       <motion.div
@@ -204,8 +227,10 @@ function StackedPreview() {
           Scheduling
         </div>
         <div className="grid grid-cols-3 gap-2 text-sm">
-          {['Today 6–8p','Tomorrow 8–10a','Sat 10–12p'].map(s => (
-            <div key={s} className="rounded-lg border bg-white/70 p-2 text-center">{s}</div>
+          {['ASAP', 'Today', 'Next available'].map((s) => (
+            <div key={s} className="rounded-lg border bg-white/70 p-2 text-center">
+              {s}
+            </div>
           ))}
         </div>
       </motion.div>
@@ -223,20 +248,23 @@ function StatStrip() {
   return (
     <section className="border-y bg-white">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 px-6 py-6 sm:grid-cols-3">
-        <StatItem icon={<ShieldCheck className="h-5 w-5" />} label="Verified local pros" end={1200} suffix="+" />
-        <StatItem icon={<AlarmClock className="h-5 w-5" />} label="Minutes to post a job" end={1} />
+        <StatItem icon={<ShieldCheck className="h-5 w-5" />} label="Verified emergency pros" end={1200} suffix="+" />
+        <StatItem icon={<Siren className="h-5 w-5" />} label="Avg. response time (mins)" end={12} />
         <StatItem icon={<Quote className="h-5 w-5" />} label="Avg. quotes per job" end={3} />
       </div>
     </section>
   )
 }
-function StatItem({ icon, label, end, suffix='' }: { icon: React.ReactNode; label: string; end: number; suffix?: string }) {
+function StatItem({ icon, label, end, suffix = '' }: { icon: React.ReactNode; label: string; end: number; suffix?: string }) {
   const val = useCountUp(end, 900)
   return (
     <div className="flex items-center justify-center gap-3 rounded-xl border border-emerald-200/60 bg-white/70 px-4 py-3">
       <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 ${homeText}`}>{icon}</div>
       <div>
-        <div className="text-xl font-extrabold text-slate-900">{val}{suffix}</div>
+        <div className="text-xl font-extrabold text-slate-900">
+          {val}
+          {suffix}
+        </div>
         <div className="text-xs text-slate-600">{label}</div>
       </div>
     </div>
@@ -259,64 +287,161 @@ function useCountUp(to: number, duration = 800) {
 }
 
 /* -------------------------------------------
-   POPULAR CATEGORIES — compact grid (7)
+   POPULAR EMERGENCIES — tabs + centered rows via ghost pads
 -------------------------------------------- */
-function CategoryShowcaseDense() {
-  const cats = [
-    { name: 'Electrical',  icon: <Lightbulb className="h-5 w-5" />, href: '/find-pro?category=Electrical' },
-    { name: 'HVAC',        icon: <Wind className="h-5 w-5" />,       href: '/find-pro?category=HVAC' },
-    { name: 'Roofing',     icon: <Home className="h-5 w-5" />,       href: '/find-pro?category=Roofing' },
-    { name: 'Plumbing',    icon: <ShowerHead className="h-5 w-5" />, href: '/find-pro?category=Plumbing' },
-    { name: 'Carpentry',   icon: <Ruler className="h-5 w-5" />,      href: '/find-pro?category=Carpentry' },
-    { name: 'Landscaping', icon: <Leaf className="h-5 w-5" />,       href: '/find-pro?category=Landscaping' },
-    { name: 'General',     icon: <Wrench className="h-5 w-5" />,     href: '/find-pro?category=General' }, // General last (as requested)
-  ]
+function PopularEmergencies() {
+  type Group = 'Home' | 'Auto' | 'General'
+  const [group, setGroup] = useState<Group>('Home')
+
+  // Detect intended column count by breakpoint (tailwind defaults)
+  const cols = useGridCols() // 2 (base), 3 (sm+), 4 (lg+)
+
+  const groups: Record<
+    Group,
+    Array<{ name: string; href: string; icon: React.ReactNode; hint?: string }>
+  > = {
+    Home: [
+      { name: 'Plumbing', href: '/find-pro?category=Plumbing&urgent=1', icon: <ShowerHead className="h-6 w-6" />, hint: 'Leaks, clogs, burst pipes' },
+      { name: 'Electrical', href: '/find-pro?category=Electrical&urgent=1', icon: <Lightbulb className="h-6 w-6" />, hint: 'No power, breakers, outlets' },
+      { name: 'HVAC', href: '/find-pro?category=HVAC&urgent=1', icon: <Wind className="h-6 w-6" />, hint: 'No-cool, no-heat' },
+      { name: 'Roof leak', href: '/find-pro?category=Roofing&urgent=1', icon: <HomeIcon className="h-6 w-6" />, hint: 'Active leak, tarp' },
+      { name: 'Water damage', href: '/find-pro?category=Water%20Damage&urgent=1', icon: <Droplets className="h-6 w-6" />, hint: 'Dry-out, mitigation' },
+      { name: 'Locksmith', href: '/find-pro?category=Locksmith&urgent=1', icon: <Lock className="h-6 w-6" />, hint: 'House lockout, rekey' },
+      { name: 'Appliance repair', href: '/find-pro?category=Appliance%20Repair&urgent=1', icon: <Wrench className="h-6 w-6" />, hint: 'Fridge, washer, oven' },
+      { name: 'Handyman', href: '/find-pro?category=Handyman&urgent=1', icon: <Hammer className="h-6 w-6" />, hint: 'Small urgent fixes' },
+    ],
+    Auto: [
+      { name: 'Jump start', href: '/find-pro?category=Auto%20Battery&urgent=1', icon: <Battery className="h-6 w-6" />, hint: 'Dead battery' },
+      { name: 'Tire change', href: '/find-pro?category=Auto%20Tire&urgent=1', icon: <Wrench className="h-6 w-6" />, hint: 'Flat, spare install' },
+      { name: 'Lockout', href: '/find-pro?category=Auto%20Lockout&urgent=1', icon: <KeyRound className="h-6 w-6" />, hint: 'Keys inside' },
+      { name: 'Tow request', href: '/find-pro?category=Tow&urgent=1', icon: <Car className="h-6 w-6" />, hint: 'Local tow' },
+      { name: 'Fuel delivery', href: '/find-pro?category=Fuel%20Delivery&urgent=1', icon: <Siren className="h-6 w-6" />, hint: 'Out of gas' },
+      { name: 'Mobile mechanic', href: '/find-pro?category=Mobile%20Mechanic&urgent=1', icon: <Settings className="h-6 w-6" />, hint: 'On-site diagnosis' },
+    ],
+    General: [
+      { name: 'Board-up', href: '/find-pro?category=Board%20Up&urgent=1', icon: <Hammer className="h-6 w-6" />, hint: 'Windows, doors' },
+      { name: 'Storm damage', href: '/find-pro?category=Storm%20Damage&urgent=1', icon: <Siren className="h-6 w-6" />, hint: 'Wind, hail' },
+      { name: 'Tree down', href: '/find-pro?category=Tree%20Service&urgent=1', icon: <Leaf className="h-6 w-6" />, hint: 'Removal, clearance' },
+      { name: 'Pest emergency', href: '/find-pro?category=Pest%20Control&urgent=1', icon: <Bug className="h-6 w-6" />, hint: 'Wasps, rodents' },
+      { name: 'Glass repair', href: '/find-pro?category=Glass%20Repair&urgent=1', icon: <HomeIcon className="h-6 w-6" />, hint: 'Windows, doors' },
+      { name: 'Other', href: '/find-pro?category=General&urgent=1', icon: <Sparkles className="h-6 w-6" />, hint: 'Tell us what happened' },
+    ],
+  }
+
+  const cats = groups[group]
+  const padCount = ((cols - (cats.length % cols)) % cols) // 0..(cols-1)
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-10">
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-2xl font-semibold text-gray-900">Popular categories</h2>
-<p className="mt-2 text-gray-600">Service comes to you.</p>
-<p className="mt-1 text-gray-600">Be first in the customer's inbox every time. Let AI quote instantly and win jobs before your competitors even open the text.</p>
+        <h2 className="text-2xl font-semibold text-gray-900">Popular emergencies</h2>
+        <p className="mt-2 text-gray-600">Pick a category and get matched fast.{' '}
+          <Link href="/find-pro?urgent=1" className="font-semibold text-emerald-700 hover:text-emerald-800">See all emergencies →</Link>
+        </p>
+        <div></div>
 
-        <p className="mt-1 text-gray-600">Tap a tile to browse top-rated local pros.</p>
+        {/* Segmented control */}
+<div className="mt-4 flex justify-center">
+  <div className="relative inline-flex rounded-full bg-slate-100 p-1">
+    {(['Home', 'Auto', 'General'] as Group[]).map((g) => {
+      const active = group === g
+      return (
+        <button
+          key={g}
+          onClick={() => setGroup(g)}
+          className={`
+            relative z-10 px-4 py-1.5 text-sm font-medium rounded-full transition
+            ${active ? 'text-white' : 'text-slate-600 hover:text-slate-800'}
+          `}
+        >
+          {g}
+          {active && (
+            <motion.span
+              layoutId="pill"
+              className="absolute inset-0 z-[-1] rounded-full bg-emerald-600"
+              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+            />
+          )}
+        </button>
+      )
+    })}
+  </div>
+</div>
+
       </div>
-      <div className="mt-6 grid gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
+
+      {/* Strict grid: 2 / 3 / 4 columns — no awkward last row thanks to ghost pads */}
+      <div className="mt-6 grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
         {cats.map((c, i) => (
           <Link key={i} href={c.href} className="group">
             <Card className="relative h-full overflow-hidden border-emerald-200/60 bg-white/85 p-3 transition hover:shadow-sm">
               <GradientBorder emerald />
               <div className="flex items-center gap-2">
-                <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 ${homeText}`}>
+                <div className={`flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 ${homeText}`}>
                   {c.icon}
                 </div>
-                <div className="truncate text-sm font-semibold text-slate-900">{c.name}</div>
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-semibold text-slate-900">{c.name}</div>
+                  <div className="truncate text-[11px] text-slate-500">{c.hint ?? '\u00A0'}</div>
+                </div>
               </div>
             </Card>
           </Link>
+        ))}
+
+        {/* Ghost pads to complete the row visually */}
+        {Array.from({ length: padCount }).map((_, i) => (
+          <div
+            key={`pad-${i}`}
+            aria-hidden
+            className="opacity-0 pointer-events-none"
+          >
+            <Card className="p-3" />
+          </div>
         ))}
       </div>
     </section>
   )
 }
 
+/* Hook: return the grid column count we use at each breakpoint (base/sm/lg) */
+function useGridCols() {
+  const [cols, setCols] = useState(2) // base
+  useEffect(() => {
+    const mSm = window.matchMedia('(min-width: 640px)')
+    const mLg = window.matchMedia('(min-width: 1024px)')
+
+    const calc = () => setCols(mLg.matches ? 4 : mSm.matches ? 3 : 2)
+    calc()
+    mSm.addEventListener?.('change', calc)
+    mLg.addEventListener?.('change', calc)
+    return () => {
+      mSm.removeEventListener?.('change', calc)
+      mLg.removeEventListener?.('change', calc)
+    }
+  }, [])
+  return cols
+}
+
+
 /* -------------------------------------------
-   HOW IT WORKS — aligned & equal heights
+   HOW IT WORKS — emergency flow
 -------------------------------------------- */
 function HowItWorksHome() {
   const steps = [
     {
-      title: 'Post your job',
-      desc: 'Describe the work once (photos help!). We’ll notify matching local pros.',
+      title: 'Request help',
+      desc: 'Describe the emergency and ZIP. Add a quick video call if useful.',
       icon: <MessageSquare className={`h-6 w-6 ${homeText}`} />,
     },
     {
-      title: 'Compare quotes',
-      desc: 'Get replies fast. Review price, photos, and availability side-by-side.',
+      title: 'Approve estimate',
+      desc: 'See clear hourly rates and expected parts. Approve before arrival.',
       icon: <Quote className={`h-6 w-6 ${homeText}`} />,
     },
     {
-      title: 'Book & track',
-      desc: 'Pick a time, message in one thread, and leave a review when it’s done.',
+      title: 'Verified time & pay',
+      desc: 'Both parties check in/out. Time is verified. Itemized invoice.',
       icon: <CalendarDays className={`h-6 w-6 ${homeText}`} />,
     },
   ]
@@ -324,7 +449,7 @@ function HowItWorksHome() {
     <section className="mx-auto max-w-7xl px-6 py-10 md:py-14">
       <div className="mx-auto max-w-3xl text-center">
         <h2 className="text-2xl font-semibold text-gray-900">How it works</h2>
-        <p className="mt-1 text-gray-600">From post to done. simple and fast.</p>
+        <p className="mt-1 text-gray-600">Simple, fast, and transparent for urgent jobs.</p>
       </div>
       <div className="mt-8 grid items-stretch gap-6 md:grid-cols-3">
         {steps.map((s, i) => (
@@ -347,39 +472,6 @@ function HowItWorksHome() {
     </section>
   )
 }
-
-/* -------------------------------------------
-   EMERGENCY BANNER — subtle, above the hero
--------------------------------------------- */
-function EmergencySpotlight() {
-  return (
-    <section className="relative border-b bg-gradient-to-r from-rose-50/60 via-white to-amber-50/60">
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-40 bg-[radial-gradient(500px_220px_at_90%_-20%,rgba(244,63,94,0.12),transparent),radial-gradient(500px_220px_at_10%_120%,rgba(245,158,11,0.12),transparent)]" />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex flex-col items-start justify-between gap-2 py-2.5 md:flex-row md:items-center">
-          <div className="flex min-w-0 items-center gap-2 text-sm">
-            <Siren className="h-4 w-4 text-rose-600" />
-            <span className="font-medium text-slate-900">Emergency repair?</span>
-            <span className="hidden md:inline text-slate-600">
-              On-call pros get priority alerts and the earliest time slots.
-            </span>
-          </div>
-
-          <Link href="/post-job/emergency" className="inline-flex shrink-0">
-            <Button
-              size="sm"
-              className="h-8 px-3 bg-rose-600 text-white hover:bg-rose-700 focus-visible:ring-rose-600"
-            >
-              Post emergency job
-              <ArrowRight className="ml-1.5 h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 
 /* -------------------------------------------
    GEO BANNER — simple guess (kept)
@@ -410,9 +502,9 @@ function GeoBanner() {
           <div className="text-sm font-semibold text-emerald-700">Find pros near you</div>
           <div className="flex items-center gap-2 text-lg font-semibold text-slate-900 md:text-xl">
             <MapPin className="h-5 w-5 text-emerald-700" />
-            <span>{city ? `Top-rated pros in ${city}` : 'Top-rated local pros near you'}</span>
+            <span>{city ? `On-call pros in ${city}` : 'On-call pros near you'}</span>
           </div>
-          <div className="mt-1 text-sm text-slate-600">Compare quotes, photos, and availability—right in the chat.</div>
+          <div className="mt-1 text-sm text-slate-600">Clear rates, verified times, emergency jobs only.</div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {popular.map((c) => (
@@ -425,174 +517,6 @@ function GeoBanner() {
     </section>
   )
 }
-
-/* -------------------------------------------
-   PROJECT STARTER — title + ZIP + 1–10 urgency slider
-   Prefills /post-job via query (title, zip, urgency, urgent)
--------------------------------------------- */
-function ProjectStarter() {
-  type Urg = 'flexible' | 'soon' | 'emergency'
-  const [title, setTitle] = useState('')
-  const [zip, setZip] = useState('')
-  const [urgency, setUrgency] = useState<Urg>('flexible') // derived from level
-  const [urgencyLevel, setUrgencyLevel] = useState<number>(1) // 1–10
-
-  // Map numeric level to your three categories
-  useEffect(() => {
-    if (urgencyLevel === 10) setUrgency('emergency')
-    else if (urgencyLevel >= 4) setUrgency('soon')
-    else setUrgency('flexible')
-  }, [urgencyLevel])
-
-  const isValid = title.trim().length > 2 && /^\d{5}$/.test(zip)
-
-  return (
-    <section className="mx-auto max-w-7xl px-6 py-10">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-2xl font-semibold text-gray-900">Start your project</h2>
-        <p className="mt-1 text-gray-600">
-          Describe the issue, add your ZIP, choose urgency. We will carry this into the form.
-        </p>
-      </div>
-
-      <div className="mx-auto mt-6 w-full max-w-3xl rounded-2xl border bg-white/90 p-4 shadow-sm">
-        {/* Inputs row */}
-        <div className="grid gap-3 md:grid-cols-[1fr_140px]">
-          <div>
-            <label className="mb-1 block text-xs font-medium text-slate-600">What do you need done?</label>
-            <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. No-cool AC • leak under sink • roof patch"
-              className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-slate-600">ZIP</label>
-            <input
-              value={zip}
-              onChange={(e) => setZip(e.target.value.replace(/[^\d]/g, '').slice(0, 5))}
-              placeholder="10001"
-              inputMode="numeric"
-              className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-200"
-            />
-          </div>
-        </div>
-
-        {/* Urgency slider 1–10 */}
-        <div className="mt-3">
-          <label className="mb-1 block text-xs font-medium text-slate-600">Urgency (1–10)</label>
-
-          <div className="rounded-md border bg-white/80 p-3">
-            <input
-              type="range"
-              min={1}
-              max={10}
-              step={1}
-              value={urgencyLevel}
-              onChange={(e) => setUrgencyLevel(Number(e.target.value))}
-              className={`w-full cursor-pointer focus:outline-none ${
-                urgency === 'emergency' ? 'accent-rose-600' : 'accent-emerald-600'
-              }`}
-              aria-label="Urgency level"
-            />
-
-            {/* Landmark labels */}
-            <div className="mt-1 flex items-center justify-between text-[11px] font-semibold text-slate-600">
-              <span className={urgency === 'flexible' ? 'text-slate-900' : ''}>1</span>
-              <span className={urgency === 'soon' ? 'text-slate-900' : ''}>5</span>
-              <span className={urgency === 'emergency' ? 'text-rose-700' : ''}>10</span>
-            </div>
-
-            {/* Status pill */}
-            <div className="mt-1.5 inline-flex items-center gap-2 text-[12px]">
-              <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-700">
-                Level {urgencyLevel}
-              </span>
-              <span
-                className={
-                  urgency === 'emergency'
-                    ? 'rounded-full bg-rose-50 px-2 py-0.5 text-rose-700'
-                    : 'rounded-full bg-emerald-50 px-2 py-0.5 text-emerald-700'
-                }
-              >
-                {urgency === 'emergency' ? 'Emergency' : urgency === 'soon' ? 'Soon' : 'Flexible'}
-              </span>
-              {urgencyLevel === 10 && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2 py-0.5 text-rose-700">
-                  <Siren className="h-3.5 w-3.5" />
-                  Priority alerts to on-call pros
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* CTA row */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-          <Link
-            href={`/post-job${buildQuery({
-              title: title.trim(),
-              zip: zip.trim(),
-              urgency,
-              urgent: urgency === 'emergency' ? 1 : 0,
-              level: urgencyLevel, // carry raw level if your form reads it
-            })}`}
-            className={`inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold ${
-              isValid ? 'bg-emerald-600 text-white hover:bg-emerald-700' : 'bg-emerald-200 text-white cursor-not-allowed'
-            }`}
-          >
-            Continue to form
-          </Link>
-
-          {/* Appears only at level 10 */}
-          {urgencyLevel === 10 && (
-            <Link
-              href={`/post-job?urgent=1&urgency=emergency${title ? `&title=${encodeURIComponent(title.trim())}` : ''}${
-                zip ? `&zip=${encodeURIComponent(zip.trim())}` : ''
-              }`}
-              className="inline-flex"
-            >
-              <Button
-                className="h-10 px-4 bg-rose-600 text-white hover:bg-rose-700 focus-visible:ring-rose-600"
-                title="Skip ahead to emergency flow"
-              >
-                Post emergency job
-                <ArrowRight className="ml-1.5 h-4 w-4" />
-              </Button>
-            </Link>
-          )}
-
-          <Link
-            href={`/find-pro?q=${encodeURIComponent(title.trim())}`}
-            className="inline-flex items-center justify-center rounded-md border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
-          >
-            Browse pros
-          </Link>
-        </div>
-
-        <div className="mt-2 text-center text-[11px] text-slate-500">
-          You will add photos and pick exact times on the next step.
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function buildQuery(obj: Record<string, any>) {
-  try {
-    const q = new URLSearchParams()
-    Object.entries(obj).forEach(([k, v]) => {
-      if (v === undefined || v === '' || v === null) return
-      q.set(k, String(v))
-    })
-    const s = q.toString()
-    return s ? `?${s}` : ''
-  } catch {
-    return ''
-  }
-}
-
 
 /* -------------------------------------------
    FEATURED PROS — compact, equal height, with badges
@@ -612,19 +536,16 @@ function FeaturedPros() {
           <ShieldCheck className="h-5 w-5 text-emerald-700" />
           <h2 className="text-lg font-semibold text-slate-900">Featured pros</h2>
         </div>
-        <Link href="/find-pro" className="text-sm text-emerald-700 hover:text-emerald-800">Browse all →</Link>
+        <Link href="/find-pro?urgent=1" className="text-sm text-emerald-700 hover:text-emerald-800">Browse all →</Link>
       </div>
 
       <div className="grid items-stretch gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {pros.map((p) => (
           <TiltCard key={p.id}>
-            <Link
-              href={`/pro/${p.id}`}
-              className="group flex h-full min-h-[140px] flex-col justify-between rounded-2xl border bg-white p-3 transition hover:shadow-sm"
-            >
+            <Link href={`/pro/${p.id}`} className="group flex h-full min-h-[140px] flex-col justify-between rounded-2xl border bg-white p-3 transition hover:shadow-sm">
               <div className="flex items-center gap-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 font-semibold text-emerald-700">
-                  {p.name.split(' ').map(s => s[0]).join('').slice(0,2)}
+                  {p.name.split(' ').map((s) => s[0]).join('').slice(0, 2)}
                 </div>
                 <div className="min-w-0">
                   <div className="truncate font-semibold text-slate-900">{p.name}</div>
@@ -637,22 +558,16 @@ function FeaturedPros() {
                 <div className="text-xs text-slate-500">{p.jobs.toLocaleString()} jobs</div>
               </div>
 
-              {/* compact badges row */}
               <div className="mt-2 flex flex-wrap gap-1">
                 <span className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700">
                   <span className="mr-1 inline-block align-[-2px]">✔</span> Verified
                 </span>
                 {p.rating >= 4.9 && (
-                  <span className="rounded-md bg-yellow-50 px-1.5 py-0.5 text-[10px] font-medium text-yellow-700">
-                    ⭐ Top Rated
-                  </span>
+                  <span className="rounded-md bg-yellow-50 px-1.5 py-0.5 text-[10px] font-medium text-yellow-700">⭐ Top rated</span>
                 )}
                 {p.jobs >= 200 && (
-                  <span className="rounded-md bg-sky-50 px-1.5 py-0.5 text-[10px] font-medium text-sky-700">
-                    ⚡ Fast reply
-                  </span>
+                  <span className="rounded-md bg-sky-50 px-1.5 py-0.5 text-[10px] font-medium text-sky-700">⚡ Fast reply</span>
                 )}
-                
               </div>
             </Link>
           </TiltCard>
@@ -663,20 +578,20 @@ function FeaturedPros() {
 }
 
 /* -------------------------------------------
-   TRUST & SAFETY — side-by-side ("Competitors")
+   TRUST & SAFETY — equal parts (4 vs 4)
 -------------------------------------------- */
-function TrustAndSafetySideBySide() {
-  const housecall = [
-    'Verified licenses & insurance',
-    'Background signals & reviews',
-    'In-app quotes & scheduling',
-    'Privacy-first messaging',
+function TrustAndSafetyEqual() {
+  const rushrPros = [
+    'Estimate before arrival',
+    'Time-verified start & end',
+    'Itemized parts & materials',
+    'Dispatcher oversight for teams',
   ]
-  const competitors = [
+  const others = [
     'Leads resold to many',
-    'Outdated or stale lists',
+    'Outdated provider lists',
     'Phone spam before details',
-    'Opaque fees & add-ons',
+    'Opaque add-on fees',
   ]
 
   return (
@@ -684,7 +599,7 @@ function TrustAndSafetySideBySide() {
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-2xl font-semibold text-gray-900">Trust & safety</h2>
-          <p className="mt-1 text-gray-600">Why homeowners and pros prefer Housecall.</p>
+          <p className="mt-1 text-gray-600">Built for emergencies. Transparent by default.</p>
         </div>
 
         <div className="mx-auto mt-6 grid gap-4 md:grid-cols-2">
@@ -692,11 +607,11 @@ function TrustAndSafetySideBySide() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ShieldCheck className={`${homeText} h-5 w-5`} />
-                Housecall
+                Rushr
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
-              {housecall.map((t, idx)=>(
+              {rushrPros.map((t, idx) => (
                 <div key={idx} className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-emerald-600" />
                   <span>{t}</span>
@@ -709,11 +624,11 @@ function TrustAndSafetySideBySide() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <XCircle className="h-5 w-5 text-slate-600" />
-                Competitors
+                Others
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
-              {competitors.map((t, idx)=>(
+              {others.map((t, idx) => (
                 <div key={idx} className="flex items-center gap-2">
                   <XCircle className="h-5 w-5 text-rose-600" />
                   <span>{t}</span>
@@ -724,7 +639,10 @@ function TrustAndSafetySideBySide() {
         </div>
 
         <div className="mt-4 text-center text-xs text-slate-500">
-          See how we vet pros and handle reviews. <Link href="/about#safety" className="font-semibold text-emerald-700 hover:text-emerald-800">Learn more →</Link>
+          Learn how we vet pros and handle disputes.{' '}
+          <Link href="/about#safety" className="font-semibold text-emerald-700 hover:text-emerald-800">
+            See details →
+          </Link>
         </div>
       </div>
     </section>
@@ -736,9 +654,9 @@ function TrustAndSafetySideBySide() {
 -------------------------------------------- */
 function TestimonialsHome() {
   const quotes = [
-    { q: 'Posted at lunch, had two quotes by dinner. Hired next morning.', n: 'Dani K.', r: 'Queens' },
-    { q: 'The messages + photos made it easy to compare. Loved the scheduling.', n: 'Mark P.', r: 'Brooklyn' },
-    { q: 'Emergency leak fixed same day. The “urgent” option works.', n: 'Alisha T.', r: 'Manhattan' },
+    { q: 'Posted at lunch. Two estimates by dinner. Fixed next morning.', n: 'Dani K.', r: 'Queens' },
+    { q: 'Clear hourly rate and a quick video call made it easy.', n: 'Mark P.', r: 'Brooklyn' },
+    { q: 'Emergency leak fixed same day. Time logs kept it fair.', n: 'Alisha T.', r: 'Manhattan' },
   ]
   return (
     <section className="relative bg-white">
@@ -769,23 +687,21 @@ function FinalCTAHome() {
   return (
     <section className="border-t bg-white">
       <div className="mx-auto max-w-7xl px-6 py-16 text-center">
-        <h2 className="text-3xl font-bold">Ready to compare quotes?</h2>
+        <h2 className="text-3xl font-bold">Need help right now?</h2>
         <p className="mx-auto mt-3 max-w-2xl text-lg text-gray-600">
-          Post once, get fast replies from verified local pros.
+          Book an on-call pro with a clear hourly rate and time-verified billing.
         </p>
         <div className="mt-8 flex items-center justify-center gap-3">
-          <Link href="/post-job" className="inline-flex">
-            <Button size="lg" className={`${homeBg} text-white ${homeRing} hover:opacity-95`}>
-              Post a job
-            </Button>
+          <Link href="/post-job?urgent=1" className="inline-flex">
+            <Button size="lg" className={`${homeBg} text-white ${homeRing} hover:opacity-95`}>Book now</Button>
           </Link>
-          <Link href="/find-pro" className="inline-flex">
+          <Link href="/how-it-works" className="inline-flex">
             <Button
               size="lg"
               variant="outline"
               className="border-[var(--home)] text-[var(--home)] hover:bg-[color:rgb(16_185_129_/_0.08)] focus-visible:ring-[var(--home)]"
             >
-              Browse pros
+              How it works
             </Button>
           </Link>
         </div>
@@ -803,10 +719,10 @@ function MobileStickyCTAHome() {
       <div className="rounded-2xl border border-emerald-200 bg-white/90 p-3 shadow-xl">
         <div className="flex items-center justify-between gap-2">
           <div className="text-left">
-            <div className={`text-xs font-semibold ${homeText}`}>Housecall</div>
-            <div className="text-sm text-gray-700">Post a job & compare quotes</div>
+            <div className={`text-xs font-semibold ${homeText}`}>Rushr</div>
+            <div className="text-sm text-gray-700">Book a verified pro now</div>
           </div>
-          <Link href="/post-job" className="inline-flex">
+          <Link href="/post-job?urgent=1" className="inline-flex">
             <Button className={`${homeBg} text-white ${homeRing} hover:opacity-95`}>Start</Button>
           </Link>
         </div>

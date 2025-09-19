@@ -16,7 +16,7 @@ export default function LogoWordmark({ className = '' }: { className?: string })
 
   const isPro = pathname?.startsWith('/pro') || isProHost
   const src = isPro ? '/logo-blue.svg' : '/logo-green.svg'
-  const alt = isPro ? 'Housecall — for pros' : 'Housecall'
+  const alt = isPro ? 'Rushr — for pros' : 'Rushr'
 
   return (
     <img

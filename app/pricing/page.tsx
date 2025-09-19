@@ -16,7 +16,7 @@ export default function PricingPage(){
         <div className="card p-6">
           <h1 className="text-3xl font-bold text-ink">Pricing</h1>
           <p className="text-slate-700 mt-2">
-            Homeowners and Pros use Housecall for <span className="font-semibold">free</span>.
+            Homeowners and Pros use Rushr for <span className="font-semibold">free</span>.
             Pros pay a <span className="font-semibold">success fee</span> only after a completed job.
             <br className="hidden md:block" />
             Upgrade with <span className="font-semibold">Signals</span> to get first shot at new opportunities.

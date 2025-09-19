@@ -216,7 +216,7 @@ export default function SignalsPage(){
           <div className="flex-1">
             <div className="text-xl font-semibold text-ink dark:text-white">Start free • simple pricing later</div>
             <ul className="mt-2 text-sm text-slate-600 dark:text-slate-300 space-y-1">
-              <li>• Pros use Housecall free</li>
+              <li>• Pros use Rushr free</li>
               <li>• Signals is a low monthly add-on based on coverage</li>
               <li>• Cancel anytime</li>
             </ul>

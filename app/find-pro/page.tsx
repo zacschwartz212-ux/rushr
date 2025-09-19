@@ -16,14 +16,36 @@ type HoursTag =
   | 'early_morning'
   | '24_7'
 
-/* Keep in sync with map legend */
+/* Keep in sync with map legend - comprehensive emergency categories */
 const CAT_EMOJI: Record<string, string> = {
+  // Home emergencies
+  Plumbing: '🚿',
   Electrical: '⚡',
   HVAC: '❄️',
   Roofing: '🏠',
-  Plumbing: '🚿',
-  Carpentry: '🪚',
+  'Water Damage': '💧',
+  Locksmith: '🔒',
+  'Appliance Repair': '🔧',
+  Handyman: '🔨',
+
+  // Auto emergencies
+  'Auto Battery': '🔋',
+  'Auto Tire': '🔧',
+  'Auto Lockout': '🗝️',
+  Tow: '🚗',
+  'Fuel Delivery': '⛽',
+  'Mobile Mechanic': '⚙️',
+
+  // General emergencies
+  'Board Up': '🔨',
+  'Storm Damage': '🌪️',
+  'Tree Service': '🌳',
+  'Pest Control': '🐛',
+  'Glass Repair': '🏠',
+
+  // Legacy/catch-all
   General: '🧰',
+  Carpentry: '🔨',
   Landscaping: '🌿',
 }
 
@@ -54,7 +76,6 @@ export default function FindProPage() {
   const [radius, setRadius] = useState(15) // miles
   const [minRating, setMinRating] = useState(0)
   const [minYears, setMinYears] = useState(0) // 0,3,5,10
-  const [emergencyOnly, setEmergencyOnly] = useState(false) // primary pill
   const [hoursTags, setHoursTags] = useState<HoursTag[]>([]) // multi-select
 
   // Map + ZIP
@@ -197,13 +218,6 @@ export default function FindProPage() {
         if (minRating > 0 && rating < minRating) return false
         if (minYears > 0 && years < minYears) return false
 
-        if (emergencyOnly) {
-          const emerg =
-            c?.emergency === true ||
-            c?.emergencyService === true ||
-            c?.['24_7'] === true
-          if (!emerg) return false
-        }
         if (!matchesHours(c)) return false
 
         const lat = Number(c?.loc?.lat)
@@ -242,7 +256,6 @@ export default function FindProPage() {
     services,
     minRating,
     minYears,
-    emergencyOnly,
     hoursTags,
     radius,
     sort,
@@ -256,14 +269,17 @@ export default function FindProPage() {
     setRadius(15)
     setMinRating(0)
     setMinYears(0)
-    setEmergencyOnly(false)
     setHoursTags([])
     setZip('')
     // keep polygon until user clears via map "Clear All"
   }
 
-  // Options list for Services
-  const serviceOptions = Object.keys(CAT_EMOJI)
+  // Categorized service options
+  const serviceCategories = {
+    'Home': ['Plumbing', 'Electrical', 'HVAC', 'Roofing', 'Water Damage', 'Locksmith', 'Appliance Repair', 'Handyman'],
+    'Auto': ['Auto Battery', 'Auto Tire', 'Auto Lockout', 'Tow', 'Fuel Delivery', 'Mobile Mechanic'],
+    'General': ['Board Up', 'Storm Damage', 'Tree Service', 'Pest Control', 'Glass Repair', 'General', 'Carpentry', 'Landscaping']
+  }
 
   return (
     <>
@@ -303,8 +319,8 @@ export default function FindProPage() {
                 }}
               />
 
-              <div className="absolute z-[3000] mt-2 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
-                <div className="mb-1 flex items-center justify-between px-1">
+              <div className="absolute z-[3000] mt-2 w-80 rounded-xl border border-slate-200 bg-white p-3 shadow-lg">
+                <div className="mb-2 flex items-center justify-between px-1">
                   <div className="text-[12px] font-medium text-slate-700">Select services</div>
                   <button
                     className="rounded-lg px-2 py-1 text-[12px] text-slate-600 hover:bg-slate-50"
@@ -313,32 +329,41 @@ export default function FindProPage() {
                       setServices([])
                     }}
                   >
-                    Clear
+                    Clear All
                   </button>
                 </div>
 
-                {/* options */}
-                <div className="grid grid-cols-2 gap-x-2 gap-y-1 px-1">
-                  {serviceOptions.map((opt) => {
-                    const checked = services.includes(opt)
-                    return (
-                      <label key={opt} className="flex items-center gap-2 rounded-md px-1 py-1 text-[13px] hover:bg-slate-50">
-                        <input
-                          type="checkbox"
-                          className="h-3.5 w-3.5 rounded border-slate-300 accent-emerald-500"
-                          checked={checked}
-                          onChange={(e) => {
-                            e.stopPropagation()
-                            setServices((prev) =>
-                              checked ? prev.filter((s) => s !== opt) : [...prev, opt]
-                            )
-                          }}
-                          onClick={(e) => e.stopPropagation()}
-                        />
-                        <span className="text-slate-800">{opt}</span>
-                      </label>
-                    )
-                  })}
+                {/* Categorized options */}
+                <div className="space-y-3">
+                  {Object.entries(serviceCategories).map(([categoryName, categoryServices]) => (
+                    <div key={categoryName}>
+                      <div className="text-[11px] font-semibold text-emerald-700 mb-1.5 px-1 uppercase tracking-wide">
+                        {categoryName}
+                      </div>
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-1 px-1">
+                        {categoryServices.map((opt) => {
+                          const checked = services.includes(opt)
+                          return (
+                            <label key={opt} className="flex items-center gap-2 rounded-md px-1 py-1 text-[12px] hover:bg-slate-50">
+                              <input
+                                type="checkbox"
+                                className="h-3.5 w-3.5 rounded border-slate-300 accent-emerald-500"
+                                checked={checked}
+                                onChange={(e) => {
+                                  e.stopPropagation()
+                                  setServices((prev) =>
+                                    checked ? prev.filter((s) => s !== opt) : [...prev, opt]
+                                  )
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                              <span className="text-slate-800">{opt}</span>
+                            </label>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="mt-2 flex justify-end">
@@ -531,18 +556,6 @@ export default function FindProPage() {
                 )
               })()}
 
-              <button
-                onClick={() => setEmergencyOnly((v) => !v)}
-                className={
-                  'rounded-full px-3 py-1.5 text-[12px] font-medium ' +
-                  (emergencyOnly
-                    ? 'bg-rose-600 text-white shadow-sm'
-                    : 'border border-rose-300 bg-rose-50 text-rose-700 hover:bg-rose-100')
-                }
-                title="Emergency service"
-              >
-                🚨 Emergency
-              </button>
             </div>
           </div>
         </div>
@@ -630,9 +643,9 @@ export default function FindProPage() {
                   <div className="mt-2.5 flex gap-1.5">
                     <a
                       href={`/pro/${encodeURIComponent(String(c?.id ?? ''))}`}
-                      className="rounded-lg bg-primary px-2.5 py-1.5 text-[12px] font-semibold text-white"
+                      className="rounded-lg bg-emerald-600 hover:bg-emerald-700 px-2.5 py-1.5 text-[12px] font-semibold text-white transition-colors"
                     >
-                      View
+                      View Pro
                     </a>
                     <a
                       href={`/messages?to=${encodeURIComponent(String(c?.id ?? ''))}`}
@@ -700,6 +713,9 @@ function MapCanvas({
   const clickHandlerRef = useRef<any>(null)
   const mouseMoveHandlerRef = useRef<any>(null)
   const dblHandlerRef = useRef<any>(null)
+  const mouseDownHandlerRef = useRef<any>(null)
+  const mouseMoveDrawHandlerRef = useRef<any>(null)
+  const mouseUpHandlerRef = useRef<any>(null)
 
   const suppressFitRef = useRef(false)
 
@@ -716,70 +732,280 @@ function MapCanvas({
         // ensure on top + interactive
         wrap.style.cssText = 'display:inline-block; pointer-events:auto; z-index:1200;'
 
-        // Legend "pill"
+        // Compact category dropdowns in top left
         const pill = L.DomUtil.create('div', 'al-legend', wrap)
         pill.style.cssText = `
-          background:rgba(255,255,255,.92); backdrop-filter:blur(4px);
+          background:rgba(255,255,255,.85); backdrop-filter:blur(6px);
           border:1px solid rgba(15,23,42,.08);
           border-radius:12px; box-shadow:0 1px 3px rgba(2,6,23,.08);
-          padding:6px 10px; color:#0f172a;
-          display:flex; gap:14px; align-items:flex-end; white-space:nowrap;
+          padding:6px; color:#0f172a;
+          display:flex; gap:4px; align-items:center; justify-content:center;
+          width:fit-content;
         `
-        Object.entries(CAT_EMOJI).forEach(([label, emoji]) => {
-          const item = L.DomUtil.create('div', '', pill)
-          item.style.cssText = `display:inline-flex; flex-direction:column; align-items:center; gap:3px;`
-          const bubble = L.DomUtil.create('div', '', item)
-          bubble.style.cssText = `
-            width:18px; height:18px; display:flex; align-items:center; justify-content:center;
-            border-radius:9999px; background:#ecfdf5; border:1px solid rgba(16,185,129,.5);
+
+        // Category data with representative icons
+        const categoryGroups = {
+          'Home': {
+            icon: '🏠',
+            items: Object.entries(CAT_EMOJI).filter(([label]) =>
+              ['Plumbing', 'Electrical', 'HVAC', 'Roofing', 'Water Damage', 'Locksmith', 'Appliance Repair', 'Handyman'].includes(label)
+            )
+          },
+          'Auto': {
+            icon: '🚗',
+            items: Object.entries(CAT_EMOJI).filter(([label]) =>
+              ['Auto Battery', 'Auto Tire', 'Auto Lockout', 'Tow', 'Fuel Delivery', 'Mobile Mechanic'].includes(label)
+            )
+          },
+          'General': {
+            icon: '🧰',
+            items: Object.entries(CAT_EMOJI).filter(([label]) =>
+              ['Board Up', 'Storm Damage', 'Tree Service', 'Pest Control', 'Glass Repair', 'General', 'Carpentry', 'Landscaping'].includes(label)
+            )
+          }
+        }
+
+        // Track open submenu
+        let currentSubmenu = null
+
+        // Create main category buttons
+        Object.entries(categoryGroups).forEach(([categoryName, categoryData]) => {
+          const categoryBtn = L.DomUtil.create('div', '', pill)
+          categoryBtn.style.cssText = `
+            display:flex; align-items:center; gap:6px; padding:6px 12px;
+            border-radius:8px; cursor:pointer; transition:all 0.2s;
+            border:1px solid rgba(16,185,129,.2); background:#ecfdf5;
+            hover:shadow-sm;
           `
-          const img = L.DomUtil.create('img', '', bubble) as HTMLImageElement
-          img.src = twemojiUrl(emoji)
-          img.alt = label
-          img.style.cssText = 'width:11px; height:11px; display:block;'
-          const cap = L.DomUtil.create('div', '', item)
-          cap.textContent = label
-          cap.style.cssText = 'font-size:10px; line-height:1.1; color:#334155; text-align:center;'
+          categoryBtn.setAttribute('data-category', categoryName)
+
+          const icon = L.DomUtil.create('span', '', categoryBtn)
+          icon.textContent = categoryData.icon
+          icon.style.cssText = 'font-size:14px;'
+
+          const label = L.DomUtil.create('span', '', categoryBtn)
+          label.textContent = categoryName
+          label.style.cssText = 'font-size:11px; font-weight:600; color:#059669;'
+
+          const arrow = L.DomUtil.create('span', '', categoryBtn)
+          arrow.textContent = '▼'
+          arrow.style.cssText = 'font-size:8px; color:#059669; transition:transform 0.2s;'
+
+          // Hover effects
+          categoryBtn.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#d1fae5'
+            this.style.transform = 'translateY(-1px)'
+            this.style.boxShadow = '0 2px 8px rgba(16,185,129,.15)'
+          })
+          categoryBtn.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#ecfdf5'
+            this.style.transform = 'translateY(0px)'
+            this.style.boxShadow = 'none'
+          })
+
+          // Click to expand submenu
+          categoryBtn.addEventListener('click', function(e) {
+            e.stopPropagation()
+
+            // Close current submenu if different category
+            if (currentSubmenu && currentSubmenu.categoryName !== categoryName) {
+              currentSubmenu.submenu.remove()
+              currentSubmenu.arrow.style.transform = 'rotate(0deg)'
+              currentSubmenu = null
+            }
+
+            // Toggle current submenu properly
+            if (currentSubmenu && currentSubmenu.categoryName === categoryName) {
+              // Close if clicking same category
+              currentSubmenu.submenu.remove()
+              arrow.style.transform = 'rotate(0deg)'
+              currentSubmenu = null
+              return
+            }
+
+            // Open new submenu
+            arrow.style.transform = 'rotate(180deg)'
+            createSubmenu(categoryName, categoryData.items, categoryBtn)
+          })
         })
 
-        // Row 1: Locate / Search / Draw
-        const row1 = L.DomUtil.create('div', 'al-legend-actions', wrap)
+        // Function to create submenu
+        function createSubmenu(categoryName, items, parentBtn) {
+          const submenu = L.DomUtil.create('div', '', wrap)
+          submenu.style.cssText = `
+            position:absolute; top:100%; left:0; margin-top:8px; z-index:1300;
+            background:rgba(255,255,255,.95); backdrop-filter:blur(8px);
+            border:1px solid rgba(15,23,42,.1); border-radius:12px;
+            box-shadow:0 4px 12px rgba(2,6,23,.15); padding:12px;
+            min-width:280px; max-width:320px;
+          `
+
+          const title = L.DomUtil.create('div', '', submenu)
+          title.textContent = categoryName + ' Services'
+          title.style.cssText = 'font-size:12px; font-weight:600; color:#059669; margin-bottom:8px; border-bottom:1px solid rgba(16,185,129,.2); padding-bottom:4px;'
+
+          const grid = L.DomUtil.create('div', '', submenu)
+          grid.style.cssText = 'display:grid; grid-template-columns:repeat(2, 1fr); gap:6px;'
+
+          items.forEach(([label, emoji]) => {
+            const item = L.DomUtil.create('div', '', grid)
+            item.style.cssText = `
+              display:flex; align-items:center; gap:8px; padding:6px 8px;
+              border-radius:6px; cursor:default; transition:background-color 0.15s;
+            `
+
+            const iconContainer = L.DomUtil.create('div', '', item)
+            iconContainer.style.cssText = 'width:16px; height:16px; display:flex; align-items:center; justify-content:center; flex-shrink:0;'
+
+            const img = L.DomUtil.create('img', '', iconContainer)
+            img.src = twemojiUrl(emoji)
+            img.alt = label
+            img.style.cssText = 'width:12px; height:12px; display:block;'
+
+            const text = L.DomUtil.create('span', '', item)
+            text.textContent = label
+            text.style.cssText = 'font-size:10px; color:#374151; font-weight:500;'
+
+            item.addEventListener('mouseenter', function() {
+              this.style.backgroundColor = 'rgba(16,185,129,0.1)'
+            })
+            item.addEventListener('mouseleave', function() {
+              this.style.backgroundColor = 'transparent'
+            })
+          })
+
+          // Store reference for cleanup
+          currentSubmenu = {
+            categoryName: categoryName,
+            submenu: submenu,
+            arrow: parentBtn.querySelector('span:last-child')
+          }
+
+          // Click outside to close
+          setTimeout(() => {
+            const closeSubmenu = (e) => {
+              if (!submenu.contains(e.target) && !parentBtn.contains(e.target)) {
+                submenu.remove()
+                currentSubmenu.arrow.style.transform = 'rotate(0deg)'
+                currentSubmenu = null
+                document.removeEventListener('click', closeSubmenu)
+              }
+            }
+            document.addEventListener('click', closeSubmenu)
+          }, 100)
+        }
+
+        // Create separate action container aligned with legend
+        const actionsContainer = L.DomUtil.create('div', 'al-actions-container')
+        actionsContainer.style.cssText = `
+          position:absolute; top:100%; left:0; margin-top:6px; z-index:1200;
+          pointer-events:auto; min-height:60px;
+        `
+        wrap.appendChild(actionsContainer)
+
+        // Row 1: Locate / Search / Draw (always visible, fixed position)
+        const row1 = L.DomUtil.create('div', 'al-legend-actions', actionsContainer)
         row1.style.cssText = `
-          margin-top:8px; display:flex; gap:8px; align-items:center;
-          justify-content:flex-start; pointer-events:auto;
+          display:flex; gap:4px; align-items:center; justify-content:flex-start;
+          pointer-events:auto; position:absolute; top:0; left:6px;
         `
         row1.innerHTML = `
-          <button type="button" class="al-btn" data-btn="locate">📍 Locate me</button>
-          <button type="button" class="al-btn" data-btn="search">🔎 Search this area</button>
-          <button type="button" class="al-btn" data-btn="draw">✏️ Draw</button>
+          <button type="button" class="al-btn" data-btn="locate"><span class="emoji">📍</span> Locate</button>
+          <button type="button" class="al-btn" data-btn="search"><span class="emoji">🔎</span> Search</button>
+          <button type="button" class="al-btn" data-btn="draw"><span class="emoji">✏️</span> Draw</button>
         `
 
-        // Row 2: Clear / Add (only visible while drawing)
-        const row2 = L.DomUtil.create('div', 'al-legend-actions-2', wrap)
+        // Row 2: Drawing controls (seamlessly integrated)
+        const row2 = L.DomUtil.create('div', 'al-legend-actions-2', actionsContainer)
         row2.style.cssText = `
-          margin-top:6px; display:${isDrawingRef.current ? 'flex' : 'none'};
-          gap:8px; align-items:center; justify-content:flex-start; pointer-events:auto;
+          display:${isDrawingRef.current ? 'flex' : 'none'};
+          gap:4px; align-items:center; justify-content:flex-start; pointer-events:auto;
+          position:absolute; top:28px; left:0;
+          margin-top:2px;
         `
         row2.innerHTML = `
-          <button type="button" class="al-btn-ghost" data-btn="clear-all">Clear All</button>
-          <button type="button" class="al-btn" data-btn="add-another">Add Another</button>
+          <button type="button" class="al-btn-ghost" data-btn="clear-all">Clear</button>
+          <button type="button" class="al-btn-ghost" data-btn="finish-draw">Done</button>
+          <div style="
+            font-size:10px; color:#059669; margin-left:8px; font-weight:500;
+            background:rgba(255,255,255,.95); padding:4px 8px; border-radius:6px;
+            border:1px solid rgba(16,185,129,.2); white-space:nowrap;
+            box-shadow:0 1px 3px rgba(0,0,0,.1);
+          ">Click map to draw</div>
         `
         row2Ref.current = row2
 
-        // Button styling + block map click-through
+        // Ultra-compact button styling + green emojis
+        const thinBtnStyle = `
+          background:#ecfdf5; border:1px solid rgba(16,185,129,.3); border-radius:6px;
+          padding:2px 6px; font-size:10px; font-weight:500; color:#059669;
+          transition:all 0.2s; cursor:pointer; white-space:nowrap;
+          display:inline-flex; align-items:center; justify-content:center; gap:2px;
+          min-width:50px; height:24px;
+        `
+        const thinBtnGhostStyle = `
+          background:#059669; border:1px solid #059669; border-radius:6px;
+          padding:2px 6px; font-size:10px; font-weight:500; color:white;
+          transition:all 0.2s; cursor:pointer; white-space:nowrap;
+          display:inline-flex; align-items:center; justify-content:center; gap:2px;
+          min-width:40px; height:24px;
+        `
+
         Array.from(row1.querySelectorAll('.al-btn')).forEach((el: any) => {
-          el.style.cssText = tinyBtn(false) + 'display:inline-flex; align-items:center; justify-content:center;'
-          addHoverGrow(el)
+          const isDrawBtn = el.getAttribute('data-btn') === 'draw'
+
+          // Apply appropriate styling
+          if (isDrawBtn && isDrawingRef.current) {
+            // Active draw button styling
+            el.style.cssText = `
+              background:#059669; border:1px solid #059669; border-radius:6px;
+              padding:2px 6px; font-size:10px; font-weight:500; color:white;
+              transition:all 0.2s; cursor:pointer; white-space:nowrap;
+              display:inline-flex; align-items:center; justify-content:center; gap:2px;
+              min-width:50px; height:24px;
+            `
+          } else {
+            el.style.cssText = thinBtnStyle
+          }
+
+          // Style emojis green (except when draw button is active)
+          const emoji = el.querySelector('.emoji')
+          if (emoji && !(isDrawBtn && isDrawingRef.current)) {
+            emoji.style.cssText = 'filter:sepia(100%) saturate(200%) hue-rotate(90deg) brightness(1.2);'
+          }
+
+          el.addEventListener('mouseenter', () => {
+            if (!(isDrawBtn && isDrawingRef.current)) {
+              el.style.backgroundColor = '#d1fae5'
+              el.style.transform = 'translateY(-1px)'
+            }
+          })
+          el.addEventListener('mouseleave', () => {
+            if (!(isDrawBtn && isDrawingRef.current)) {
+              el.style.backgroundColor = '#ecfdf5'
+              el.style.transform = 'translateY(0)'
+            }
+          })
         })
+
         Array.from(row2.querySelectorAll('.al-btn, .al-btn-ghost')).forEach((el: any) => {
-          const primary = el.classList.contains('al-btn') && !el.classList.contains('al-btn-ghost')
-          el.style.cssText = (primary ? tinyBtn(true) : ghostBtn()) + 'display:inline-flex; align-items:center; justify-content:center;'
-          addHoverGrow(el as HTMLElement)
+          const isGhost = el.classList.contains('al-btn-ghost')
+          el.style.cssText = isGhost ? thinBtnGhostStyle : thinBtnStyle
+          el.addEventListener('mouseenter', () => {
+            el.style.backgroundColor = '#047857' // Darker green on hover
+            el.style.transform = 'translateY(-1px)'
+          })
+          el.addEventListener('mouseleave', () => {
+            el.style.backgroundColor = '#059669' // Back to normal green
+            el.style.transform = 'translateY(0)'
+          })
         })
 
         // prevent map from swallowing events under legend
         L.DomEvent.disableClickPropagation(wrap)
         L.DomEvent.disableScrollPropagation(wrap)
+        L.DomEvent.disableClickPropagation(actionsContainer)
+        L.DomEvent.disableScrollPropagation(actionsContainer)
 
         // 🔑 Single delegated handler for all legend buttons
         wrap.addEventListener('click', (e: any) => {
@@ -822,6 +1048,11 @@ function MapCanvas({
             finalizeCurrentIfPossible(L, map)
             startFreshDrawing(L, map)
             if (row2Ref.current) row2Ref.current.style.display = 'flex'
+          }
+
+          if (kind === 'finish-draw') {
+            finalizeCurrentIfPossible(L, map)
+            toggleDrawMode(L, map, false) // Turn off draw mode
           }
         }, { capture: true })
 
@@ -880,10 +1111,11 @@ function MapCanvas({
     const pts = tempPtsRef.current
     if (pts.length >= 3) {
       const poly = L.polygon(pts, {
-        color: '#10b981',
+        color: '#059669',
         weight: 2,
-        fillColor: '#10b981',
-        fillOpacity: 0.15,
+        fillColor: '#059669',
+        fillOpacity: 0.2,
+        opacity: 0.9,
       })
       drawingsLayerRef.current.addLayer(poly)
       emitDrawingsGeoJSON()
@@ -918,27 +1150,56 @@ function MapCanvas({
       disableMapInteractions(map)
       startFreshDrawing(L, map)
 
-      const onClick = (e: any) => {
-        tempPtsRef.current.push([e.latlng.lat, e.latlng.lng])
-        if (!tempLineRef.current) {
-          tempLineRef.current = L.polyline(tempPtsRef.current, { color: '#10b981', weight: 2 }).addTo(map)
-        } else {
+      let isDrawing = false
+
+      const onMouseDown = (e: any) => {
+        isDrawing = true
+        tempPtsRef.current = [[e.latlng.lat, e.latlng.lng]]
+        tempLineRef.current = L.polyline(tempPtsRef.current, {
+          color: '#059669',
+          weight: 3,
+          opacity: 0.8,
+          dashArray: '5, 10'
+        }).addTo(map)
+        map._container.style.cursor = 'crosshair'
+      }
+
+      const onMouseMove = (e: any) => {
+        if (!isDrawing || !tempLineRef.current) return
+        // Add point every few pixels to create smooth line
+        const lastPoint = tempPtsRef.current[tempPtsRef.current.length - 1]
+        const newPoint = [e.latlng.lat, e.latlng.lng]
+        const distance = Math.sqrt(
+          Math.pow(lastPoint[0] - newPoint[0], 2) + Math.pow(lastPoint[1] - newPoint[1], 2)
+        )
+        if (distance > 0.0001) { // Only add if moved enough
+          tempPtsRef.current.push(newPoint)
           tempLineRef.current.setLatLngs(tempPtsRef.current)
         }
       }
-      const onMove = (e: any) => {
-        if (!tempLineRef.current || tempPtsRef.current.length === 0) return
-        const preview = [...tempPtsRef.current, [e.latlng.lat, e.latlng.lng]]
-        tempLineRef.current.setLatLngs(preview)
-      }
-      const onDbl = (e: any) => {
-        if (tempPtsRef.current.length >= 2) tempPtsRef.current.push([e.latlng.lat, e.latlng.lng])
-        finalizeCurrentIfPossible(L, map)
+
+      const onMouseUp = (e: any) => {
+        if (!isDrawing) return
+        isDrawing = false
+        map._container.style.cursor = ''
+        if (tempPtsRef.current.length >= 3) {
+          finalizeCurrentIfPossible(L, map)
+        } else {
+          // Remove line if too short
+          if (tempLineRef.current) {
+            try { map.removeLayer(tempLineRef.current) } catch {}
+            tempLineRef.current = null
+          }
+          tempPtsRef.current = []
+        }
       }
 
-      map.on('click', onClick)
-      map.on('mousemove', onMove)
-      map.on('dblclick', onDbl)
+      map.on('mousedown', onMouseDown)
+      map.on('mousemove', onMouseMove)
+      map.on('mouseup', onMouseUp)
+      mouseDownHandlerRef.current = onMouseDown
+      mouseMoveDrawHandlerRef.current = onMouseMove
+      mouseUpHandlerRef.current = onMouseUp
       clickHandlerRef.current = onClick
       mouseMoveHandlerRef.current = onMove
       dblHandlerRef.current = onDbl
@@ -947,9 +1208,15 @@ function MapCanvas({
       if (clickHandlerRef.current) map.off('click', clickHandlerRef.current)
       if (mouseMoveHandlerRef.current) map.off('mousemove', mouseMoveHandlerRef.current)
       if (dblHandlerRef.current) map.off('dblclick', dblHandlerRef.current)
+      if (mouseDownHandlerRef.current) map.off('mousedown', mouseDownHandlerRef.current)
+      if (mouseMoveDrawHandlerRef.current) map.off('mousemove', mouseMoveDrawHandlerRef.current)
+      if (mouseUpHandlerRef.current) map.off('mouseup', mouseUpHandlerRef.current)
       clickHandlerRef.current = null
       mouseMoveHandlerRef.current = null
       dblHandlerRef.current = null
+      mouseDownHandlerRef.current = null
+      mouseMoveDrawHandlerRef.current = null
+      mouseUpHandlerRef.current = null
       if (tempLineRef.current) {
         try { map.removeLayer(tempLineRef.current) } catch {}
         tempLineRef.current = null
@@ -972,9 +1239,11 @@ function MapCanvas({
         const map = L.map(mapRef.current, { zoomControl: false }).setView(initialCenter, 11)
         mapObjRef.current = map
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // Balanced grey style - perfect middle ground
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
           maxZoom: 19,
-          attribution: '&copy; OpenStreetMap',
+          attribution: '&copy; OpenStreetMap &copy; CARTO',
+          subdomains: 'abcd',
         }).addTo(map)
 
         L.control.zoom({ position: 'topright' }).addTo(map)
@@ -997,6 +1266,9 @@ function MapCanvas({
           if (clickHandlerRef.current) map.off('click', clickHandlerRef.current)
           if (mouseMoveHandlerRef.current) map.off('mousemove', mouseMoveHandlerRef.current)
           if (dblHandlerRef.current) map.off('dblclick', dblHandlerRef.current)
+          if (mouseDownHandlerRef.current) map.off('mousedown', mouseDownHandlerRef.current)
+          if (mouseMoveDrawHandlerRef.current) map.off('mousemove', mouseMoveDrawHandlerRef.current)
+          if (mouseUpHandlerRef.current) map.off('mouseup', mouseUpHandlerRef.current)
           try { if (layerRef.current) map.removeLayer(layerRef.current) } catch {}
           try { if (drawingsLayerRef.current) map.removeLayer(drawingsLayerRef.current) } catch {}
           try { if (legendRef.current) map.removeControl(legendRef.current) } catch {}

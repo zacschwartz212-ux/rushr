@@ -298,7 +298,7 @@ function ClientInner() {
         {/* Header row */}
         <div className="mb-5 flex items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">Become an Housecall Pro</h1>
+            <h1 className="text-2xl font-semibold text-slate-900">Become an Rushr Pro</h1>
             <p className="text-slate-600 mt-1">Tell us about your business so homeowners can hire you with confidence.</p>
           </div>
           <div className="flex items-center gap-2">
@@ -693,7 +693,7 @@ function ClientInner() {
                           className="h-28 w-28 rounded-full grid place-items-center text-2xl font-semibold"
                           style={{ background: 'rgba(var(--color-primary), 0.12)', color: 'rgb(var(--color-primary))' }}
                         >
-                          {monogram(form.businessName || 'Housecall Pro')}
+                          {monogram(form.businessName || 'Rushr Pro')}
                         </div>
                     }
                   </div>
@@ -963,7 +963,7 @@ function ClientInner() {
                           className="h-28 w-28 rounded-full grid place-items-center text-2xl font-semibold"
                           style={{ background: 'rgba(var(--color-primary), 0.12)', color: 'rgb(var(--color-primary))' }}
                         >
-                          {monogram(form.businessName || 'Housecall Pro')}
+                          {monogram(form.businessName || 'Rushr Pro')}
                         </div>
                     }
                   </div>

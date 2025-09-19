@@ -98,7 +98,7 @@ export default function ContactPage() {
               We are here to help
             </div>
             <h1 className="mt-3 text-3xl font-semibold text-slate-900">
-              Contact Housecall
+              Contact Rushr
             </h1>
             <p className="mt-2 text-sm text-slate-600">
               Questions about quotes, accounts, or Signals? Send us a note and we will get right back.
@@ -197,7 +197,7 @@ export default function ContactPage() {
                   className="mt-[3px] h-4 w-4 rounded border-slate-300 text-primary focus:ring-emerald-200"
                 />
                 <span>
-                  I agree to be contacted about my request. Housecall will use this information to respond and provide support.
+                  I agree to be contacted about my request. Rushr will use this information to respond and provide support.
                 </span>
               </label>
 

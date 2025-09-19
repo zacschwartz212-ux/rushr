@@ -38,7 +38,7 @@ export default function ChooseRolePage() {
   return (
     <section className="section">
       <div className="max-w-lg mx-auto card p-6 space-y-4">
-        <h1 className="text-2xl font-bold text-ink">How will you use Housecall?</h1>
+        <h1 className="text-2xl font-bold text-ink">How will you use Rushr?</h1>
         <p className="text-slate-700">Pick one to continue. You can change this later in your profile.</p>
         <div className="grid md:grid-cols-2 gap-3">
           <button className="btn-primary w-full" onClick={()=>pick('homeowner')}>I am a homeowner</button>

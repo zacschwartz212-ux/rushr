@@ -10,10 +10,10 @@ export default function Terms(){
         <p className="text-sm text-slate-600 mt-1">Last updated: {new Date().toLocaleDateString()}</p>
 
         <h2 className="mt-6 font-semibold text-ink">1. Agreement</h2>
-        <p className="mt-2 text-sm">By accessing or using Housecall, you agree to these Terms. If you do not agree, do not use the Service.</p>
+        <p className="mt-2 text-sm">By accessing or using Rushr, you agree to these Terms. If you do not agree, do not use the Service.</p>
 
         <h2 className="mt-4 font-semibold text-ink">2. The Service</h2>
-        <p className="mt-2 text-sm">Housecall connects homeowners with contractors. Housecall is not a party to agreements between users and does not guarantee outcomes.</p>
+        <p className="mt-2 text-sm">Rushr connects homeowners with contractors. Rushr is not a party to agreements between users and does not guarantee outcomes.</p>
 
         <h2 className="mt-4 font-semibold text-ink">3. Accounts</h2>
         <p className="mt-2 text-sm">You are responsible for your account credentials and all activity under your account.</p>
@@ -29,13 +29,13 @@ export default function Terms(){
         </ul>
 
         <h2 className="mt-4 font-semibold text-ink">6. Content</h2>
-        <p className="mt-2 text-sm">You own your content. You grant Housecall a limited license to host and display content solely to provide the Service.</p>
+        <p className="mt-2 text-sm">You own your content. You grant Rushr a limited license to host and display content solely to provide the Service.</p>
 
         <h2 className="mt-4 font-semibold text-ink">7. Disclaimers</h2>
         <p className="mt-2 text-sm">The Service is provided “as is” without warranties. Use at your own risk.</p>
 
         <h2 className="mt-4 font-semibold text-ink">8. Liability</h2>
-        <p className="mt-2 text-sm">To the maximum extent permitted by law, Housecall is not liable for indirect, incidental, or consequential damages.</p>
+        <p className="mt-2 text-sm">To the maximum extent permitted by law, Rushr is not liable for indirect, incidental, or consequential damages.</p>
 
         <h2 className="mt-4 font-semibold text-ink">9. Termination</h2>
         <p className="mt-2 text-sm">We may suspend or terminate accounts for violations of these Terms.</p>

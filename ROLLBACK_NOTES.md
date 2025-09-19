@@ -1,4 +1,4 @@
-# Housecall - Auth Rolled Back
+# Rushr - Auth Rolled Back
 
 This snapshot removes NextAuth/sign-in wiring and fixes PostCSS/Tailwind/TypeScript config so the app compiles cleanly in StackBlitz.
 

@@ -461,7 +461,7 @@ function MessagesContent() {
         {/* Header */}
         <div className="flex items-center justify-between gap-3 border-b p-3">
           <div className="flex min-w-0 items-center gap-3">
-            <Avatar name={(active?.counterpart ?? 'Housecall') as string} />
+            <Avatar name={(active?.counterpart ?? 'Rushr') as string} />
             <div className="min-w-0">
               <div className="truncate text-sm font-semibold text-slate-800">{active?.counterpart}</div>
               <div className="text-xs text-slate-500">{active?.title}</div>

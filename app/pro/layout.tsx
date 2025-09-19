@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 
 export const metadata: Metadata = {
-  title: { default: 'Housecall Pro', template: '%s | Housecall Pro' },
-  description: 'The contractor side of Housecall — manage jobs, Signals, and your profile.',
+  title: { default: 'Rushr Pro', template: '%s | Rushr Pro' },
+  description: 'The contractor side of Rushr — manage jobs, Signals, and your profile.',
 }
 
 export const viewport: Viewport = {

@@ -10,11 +10,14 @@ export default function Footer() {
   const router = useRouter()
   const { state, openAuth } = useApp() as any
 
+  // For local development, use relative paths instead of cross-site URLs
+  const isLocalDev = !process.env.NEXT_PUBLIC_PRO_URL && !process.env.NEXT_PUBLIC_MAIN_URL
+
   const PRO_HOME  = process.env.NEXT_PUBLIC_PRO_URL  || 'http://pro.localhost:3000'
   const MAIN_HOME = process.env.NEXT_PUBLIC_MAIN_URL || 'http://localhost:3000'
   const join = (base: string, path: string) => base.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '')
-  const toMain = (p: string) => join(MAIN_HOME, p)
-  const toPro  = (p: string) => join(PRO_HOME, p)
+  const toMain = (p: string) => isLocalDev ? p : join(MAIN_HOME, p)
+  const toPro  = (p: string) => isLocalDev ? p : join(PRO_HOME, p)
 
   const isActiveLocal = (href: string) => pathname === href
   const isExternal = (href: string) => /^https?:\/\//i.test(href)
@@ -39,7 +42,9 @@ export default function Footer() {
       else router.push(href)
     }
     // Route based on role when signed in; otherwise open auth
-    const target = state?.user?.role === 'CONTRACTOR'
+    // In local dev, just use /dashboard for all roles
+    const target = isLocalDev ? '/dashboard'
+      : state?.user?.role === 'CONTRACTOR'
       ? toPro('/dashboard')
       : toMain('/dashboard')
 
@@ -77,8 +82,8 @@ export default function Footer() {
             <li><FLink href={toMain('/about')}>About</FLink></li>
             <li><FLink href={toMain('/pricing')}>Pricing</FLink></li>
             <li><DashboardItem /></li>
-            <li><FLink href={MAIN_HOME}>Housecall for Homeowners</FLink></li>
-            <li><FLink href={PRO_HOME}>Housecall For Pros</FLink></li>
+            <li><FLink href={MAIN_HOME}>Rushr for Homeowners</FLink></li>
+            <li><FLink href={PRO_HOME}>Rushr For Pros</FLink></li>
           </ul>
         </div>
 
@@ -113,7 +118,7 @@ export default function Footer() {
 
       <div className="border-t border-slate-100 dark:border-slate-800">
         <div className="container-max py-4 text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-3">
-          <span>© {year} Housecall</span>
+          <span>© {year} Rushr</span>
           <span className="mx-2 hidden sm:inline">•</span>
           <span>Made for homeowners &amp; contractors</span>
         </div>

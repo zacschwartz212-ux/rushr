@@ -90,7 +90,7 @@ function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mt-4 max-w-xl text-lg text-gray-600"
           >
-            Housecall Pro gives you real-time Signals, direct chat with homeowners, and a pipeline that closes.
+            Rushr Pro gives you real-time Signals, direct chat with homeowners, and a pipeline that closes.
           </motion.p>
 
           <motion.div
@@ -287,8 +287,8 @@ function HowItWorks() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-10 md:py-14">
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-semibold text-gray-900">How Housecall Pro works</h2>
-<p className="mt-2 text-gray-600">Be first in the customer's inbox every time. Let AI quote instantly and win jobs before your competitors even open the text.</p>
+        <h2 className="text-3xl font-semibold text-gray-900">How Rushr Pro works</h2>
+<p className="mt-2 text-gray-600">Be first in the customer&apos;s inbox every time. Let AI quote instantly and win jobs before your competitors even open the text.</p>
 
         <p className="mt-2 text-gray-600">From signal to signed job in three simple steps.</p>
       </div>
@@ -703,7 +703,7 @@ function Comparison() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-semibold text-gray-900">Housecall vs old lead platforms</h2>
+        <h2 className="text-3xl font-semibold text-gray-900">Rushr vs old lead platforms</h2>
         <p className="mt-2 text-gray-600">The differences that actually change outcomes.</p>
       </div>
 
@@ -712,7 +712,7 @@ function Comparison() {
           <thead className="bg-[color:rgb(219_234_254_/_0.6)] text-gray-800">
             <tr>
               <th className="px-4 py-3 text-sm font-semibold">Feature</th>
-              <th className="px-4 py-3 text-sm font-semibold">Housecall Pro</th>
+              <th className="px-4 py-3 text-sm font-semibold">Rushr Pro</th>
               <th className="px-4 py-3 text-sm font-semibold">Old platforms</th>
             </tr>
           </thead>
@@ -767,7 +767,7 @@ function WhySwitch() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-14">
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-semibold text-gray-900">Why pros switch to Housecall</h2>
+        <h2 className="text-3xl font-semibold text-gray-900">Why pros switch to Rushr</h2>
         <p className="mt-2 text-gray-600">Real gains from speed, targeting, and organization.</p>
       </div>
       <div className="mt-8 grid gap-6 md:grid-cols-3">
@@ -803,7 +803,7 @@ function TradesWeServe() {
     <section className="mx-auto max-w-7xl px-6 pb-6 md:pb-10">
       <div className="mx-auto max-w-3xl text-center">
         <h3 className="text-2xl font-semibold text-gray-900">Built for the trades</h3>
-        <p className="mt-2 text-gray-600">Housecall Pro helps any licensed contractor move faster and win more.</p>
+        <p className="mt-2 text-gray-600">Rushr Pro helps any licensed contractor move faster and win more.</p>
       </div>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
         {trades.map((t, i) => (
@@ -848,7 +848,7 @@ function Testimonials() {
     <section className="relative border-t bg-white">
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-50 via-white to-emerald-50 opacity-60" />
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <h2 className="text-center text-3xl font-semibold">Pros who switched to Housecall</h2>
+        <h2 className="text-center text-3xl font-semibold">Pros who switched to Rushr</h2>
 
         <div className="mt-8 grid items-stretch gap-6 md:grid-cols-3">
           {quotes.map((t, i) => {
@@ -897,7 +897,7 @@ function FAQ() {
     { q: "Do I pay per lead or monthly", a: "Start free to explore. Upgrade for advanced Signals, targeting, and higher volume." },
     { q: "How fast are Signals", a: "Signals are real time. Many contractors reply within minutes and win same-day jobs." },
     { q: "Can my team use it", a: "Yes. Invite techs and coordinators with roles and internal notes." },
-    { q: "Do I need to change my current process", a: "No. Housecall fits in cleanly. Use chat, keep your pipeline updated, and export data when needed." },
+    { q: "Do I need to change my current process", a: "No. Rushr fits in cleanly. Use chat, keep your pipeline updated, and export data when needed." },
   ]
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
@@ -926,7 +926,7 @@ function FinalCTA() {
       <div className="mx-auto max-w-7xl px-6 py-16 text-center">
         <h2 className="text-3xl font-bold">Ready to grow your business</h2>
         <p className="mx-auto mt-3 max-w-2xl text-lg text-gray-600">
-          Join Housecall Pro and start winning more jobs faster.
+          Join Rushr Pro and start winning more jobs faster.
         </p>
         <div className="mt-8 flex items-center justify-center gap-3">
           <Link href="/signup">
@@ -959,7 +959,7 @@ function MobileStickyCTA() {
       <div className="rounded-2xl border border-blue-200 bg-white/90 p-3 shadow-xl">
         <div className="flex items-center justify-between gap-2">
           <div className="text-left">
-            <div className={`text-xs font-semibold ${proText}`}>Housecall Pro</div>
+            <div className={`text-xs font-semibold ${proText}`}>Rushr Pro</div>
             <div className="text-sm text-gray-700">Signals + Chat + Pipeline</div>
           </div>
           <Link href="/signup">

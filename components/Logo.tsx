@@ -3,7 +3,7 @@ import * as React from 'react'
 
 type Props = React.SVGProps<SVGSVGElement> & { title?: string }
 
-export default function Logo({ className, title = 'Housecall', ...rest }: Props) {
+export default function Logo({ className, title = 'Rushr', ...rest }: Props) {
   return (
     <svg
       viewBox="0 0 280 32"
@@ -27,7 +27,7 @@ export default function Logo({ className, title = 'Housecall', ...rest }: Props)
         fontSize="18"
         fill="currentColor"
       >
-        Housecall
+        Rushr
       </text>
     </svg>
   )

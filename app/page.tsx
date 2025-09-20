@@ -85,27 +85,30 @@ export default function HomePage() {
    HERO — keep layout, swap copy
 -------------------------------------------- */
 function HeroHome() {
-  const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  const [pos, setPos] = useState<{x:number;y:number}>({x:0,y:0})
+  const [jobInput, setJobInput] = useState('')
   const onMove = (e: React.MouseEvent) => {
     const r = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
     setPos({ x: e.clientX - r.left, y: e.clientY - r.top })
   }
 
+  const handleJobSubmit = () => {
+    if (jobInput.trim()) {
+      window.location.href = `/post-job?description=${encodeURIComponent(jobInput)}`
+    }
+  }
+
   return (
     <section className="relative" onMouseMove={onMove}>
-      {/* Spotlight follows cursor */}
+      {/* Interactive cursor spotlight */}
       <motion.div
         className="pointer-events-none absolute -z-10 h-72 w-72 rounded-full"
-        style={{
-          left: pos.x - 140,
-          top: pos.y - 140,
-          background: 'radial-gradient(closest-side, rgba(16,185,129,.22), transparent 70%)',
-        }}
+        style={{ left: pos.x - 140, top: pos.y - 140, background: 'radial-gradient(closest-side, rgba(16,185,129,.22), transparent 70%)' }}
         animate={{ scale: [1, 1.08, 1], opacity: [0.65, 0.9, 0.65] }}
         transition={{ duration: 6, repeat: Infinity }}
       />
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 pt-16 pb-10 md:grid-cols-2 md:pt-24">
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 pt-16 pb-10 md:grid-cols-2 md:pt-24">
         {/* Left copy */}
         <div>
           <motion.h1
@@ -114,7 +117,7 @@ function HeroHome() {
             transition={{ duration: 0.5 }}
             className="text-4xl font-black tracking-tight text-gray-900 md:text-6xl"
           >
-            Urgent? We’re built for that.
+            Hire the right pro without the hassle
           </motion.h1>
 
           <motion.p
@@ -123,41 +126,60 @@ function HeroHome() {
             transition={{ duration: 0.6, delay: 0.08 }}
             className="mt-4 max-w-xl text-lg text-gray-600"
           >
-            Just one tap to book an on-call pro with a clear hourly rate and time-verified billing.
+            Post your job once. Compare quotes, photos, and availability in one place. Message pros directly and book fast.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.16 }}
-            className="mt-8 flex flex-wrap items-center gap-3"
+            className="mt-8 space-y-4"
           >
-            <Link href="/post-job?urgent=1" className="inline-flex">
-              <Button size="lg" className={`${homeBg} text-white ${homeRing} hover:opacity-95`}>
-                Book now
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/how-it-works" className="inline-flex">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-[var(--home)] text-[var(--home)] hover:bg-[color:rgb(16_185_129_/_0.08)] focus-visible:ring-[var(--home)]"
-              >
-                How it works
-              </Button>
-            </Link>
+            {/* Job Requirements Input */}
+            <div className="flex flex-col gap-3 max-w-xl">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={jobInput}
+                  onChange={(e) => setJobInput(e.target.value)}
+                  placeholder="Describe what you need done..."
+                  className="flex-1 px-4 py-3 border-2 border-emerald-200 rounded-lg focus:border-emerald-500 focus:ring-0 text-base"
+                  onKeyPress={(e) => e.key === 'Enter' && handleJobSubmit()}
+                />
+                <Button
+                  onClick={handleJobSubmit}
+                  disabled={!jobInput.trim()}
+                  className={`h-[52px] px-6 ${homeBg} text-white ${homeRing} hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  Post Job
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Secondary CTA */}
+            <div>
+              <Link href="/find-pro" className="inline-flex">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-[var(--home)] text-[var(--home)] hover:bg-[color:rgb(16_185_129_/_0.08)] focus-visible:ring-[var(--home)]"
+                >
+                  Browse local pros
+                </Button>
+              </Link>
+            </div>
           </motion.div>
 
           {/* Floating trust badges */}
           <div className="mt-6 flex flex-wrap gap-3">
             <FloatingBadge icon={<BadgeCheck className="h-4 w-4" />} text="Verified pros" delay={0} />
-            <FloatingBadge icon={<ShieldCheck className="h-4 w-4" />} text="Clear hourly rates" delay={0.15} />
-            <FloatingBadge icon={<Siren className="h-4 w-4" />} text="Start & end times verified" delay={0.3} />
+            <FloatingBadge icon={<Sparkles className="h-4 w-4" />} text="Near instant replies" delay={0.15} />
+            <FloatingBadge icon={<ShieldCheck className="h-4 w-4" />} text="Hire with confidence" delay={0.3} />
           </div>
         </div>
 
-        {/* Right: UI preview cards (kept) */}
+        {/* Right: stacked preview cards */}
         <div className="relative">
           <StackedPreview />
         </div>
@@ -192,11 +214,15 @@ function StackedPreview() {
       >
         <div className="mb-2 flex items-center gap-2 text-sm text-gray-600">
           <MessageSquare className={`${homeText} h-4 w-4`} />
-          Diagnostic chat/video
+          Direct messages
         </div>
         <div className="space-y-2 text-sm">
-          <div className="max-w-[85%] rounded-lg bg-gray-100 px-3 py-2 text-gray-800">Quick leak under the sink — what’s the ETA?</div>
-          <div className={`ml-auto max-w-[85%] rounded-lg ${homeBg} px-3 py-2 text-white`}>I can be there today. Hourly is $125. Want a quick video call?</div>
+          <div className="max-w-[85%] rounded-lg bg-gray-100 px-3 py-2 text-gray-800">
+            Hi! Small leak under the sink - can you help?
+          </div>
+          <div className={`ml-auto max-w-[85%] rounded-lg ${homeBg} px-3 py-2 text-white`}>
+            Sure - send a photo & ZIP?
+          </div>
         </div>
       </motion.div>
 
@@ -207,13 +233,13 @@ function StackedPreview() {
         transition={{ duration: 0.55, delay: 0.2 }}
       >
         <div className="flex items-center justify-between">
-          <div className="text-sm font-semibold text-gray-800">Estimate</div>
-          <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Approve first</span>
+          <div className="text-sm font-semibold text-gray-800">Quote preview</div>
+          <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">24m avg to first reply</span>
         </div>
         <div className="mt-2 h-2 overflow-hidden rounded bg-emerald-100">
           <div className="h-2 w-2/3 bg-[var(--home)]" />
         </div>
-        <div className="mt-2 text-xs text-gray-500">Hourly labor + agreed parts/materials</div>
+        <div className="mt-2 text-xs text-gray-500">Compare quotes side-by-side in messages</div>
       </motion.div>
 
       <motion.div
@@ -227,10 +253,8 @@ function StackedPreview() {
           Scheduling
         </div>
         <div className="grid grid-cols-3 gap-2 text-sm">
-          {['ASAP', 'Today', 'Next available'].map((s) => (
-            <div key={s} className="rounded-lg border bg-white/70 p-2 text-center">
-              {s}
-            </div>
+          {['Today 6–8p','Tomorrow 8–10a','Sat 10–12p'].map(s => (
+            <div key={s} className="rounded-lg border bg-white/70 p-2 text-center">{s}</div>
           ))}
         </div>
       </motion.div>

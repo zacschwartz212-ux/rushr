@@ -15,14 +15,14 @@ export default function LogoWordmark({ className = '' }: { className?: string })
   }, [])
 
   const isPro = pathname?.startsWith('/pro') || isProHost
-  const src = isPro ? '/logo-blue.svg' : '/logo-green.svg'
+  const src = isPro ? '/rushr-pro.png' : '/rushr.png'
   const alt = isPro ? 'Rushr — for pros' : 'Rushr'
 
   return (
     <img
       src={src}
       alt={alt}
-      className={`block h-7 w-auto select-none ${className}`}
+      className={`block h-10 w-auto select-none ${className}`}
       // small visual padding to soften any edge rounding
       style={{ paddingRight: 2 }}
       draggable={false}

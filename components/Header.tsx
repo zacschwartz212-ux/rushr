@@ -97,6 +97,15 @@ export default function Header() {
     return () => window.removeEventListener('keydown', onEsc)
   }, [])
 
+  // Cleanup timers on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      Object.values(timers.current).forEach(timer => {
+        if (timer) window.clearTimeout(timer)
+      })
+    }
+  }, [])
+
   const isActive = (href: string) => pathname === href || (href !== '/' && pathname.startsWith(href))
   const role = hydrated ? ((state?.user?.role || null) as 'HOMEOWNER' | 'CONTRACTOR' | null) : null
   const signedIn = hydrated ? !!state?.user?.signedIn : false
@@ -143,16 +152,37 @@ export default function Header() {
     const startClose = () => {
       const k = keyName
       if (timers.current[k]) window.clearTimeout(timers.current[k] as number)
-      timers.current[k] = window.setTimeout(() => setOpen(false), 140) as any
+      timers.current[k] = window.setTimeout(() => setOpen(false), 200) as any
     }
     const cancelClose = () => {
       const k = keyName
-      if (timers.current[k]) window.clearTimeout(timers.current[k] as number)
+      if (timers.current[k]) {
+        window.clearTimeout(timers.current[k] as number)
+        timers.current[k] = null
+      }
+    }
+
+    const handleOpen = () => {
+      // Close other dropdowns to prevent multiple open
+      if (keyName !== 'pro') setOpenFindPro(false)
+      if (keyName !== 'work') setOpenFindWork(false)
+      if (keyName !== 'more') setOpenMore(false)
+      cancelClose()
+      setOpen(true)
+    }
+
+    const handleClick = () => {
+      if (open) {
+        setOpen(false)
+      } else {
+        handleOpen()
+      }
     }
     return (
-      <div className="relative" onMouseEnter={() => { cancelClose(); setOpen(true) }} onMouseLeave={startClose}>
+      <div className="relative" onMouseEnter={handleOpen} onMouseLeave={startClose}>
         <button
-          className={`relative inline-flex items-center pb-1 hover:text-ink dark:hover:text-white font-medium ${
+          onClick={handleClick}
+          className={`relative inline-flex items-center pb-1 hover:text-ink dark:hover:text-white font-medium transition-colors ${
             active ? BRAND.primaryText : 'text-slate-700 dark:text-slate-200'
           }`}
           aria-haspopup="menu"
@@ -164,11 +194,11 @@ export default function Header() {
               active ? `opacity-100 ${BRAND.activeUnderline}` : 'opacity-0'
             }`}
           />
-          <span className={`ml-1 inline-block transition-transform ${open ? 'rotate-180' : ''}`}>▾</span>
+          <span className={`ml-1 inline-block transition-transform duration-200 ease-in-out ${open ? 'rotate-180' : ''}`}>▾</span>
         </button>
         {open && (
           <div
-            className="absolute left-0 top-8 z-40 card p-2 w-64 shadow-soft"
+            className="absolute left-0 top-8 z-40 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2 w-64 shadow-lg animate-in fade-in-0 zoom-in-95 duration-200"
             onMouseEnter={cancelClose}
             onMouseLeave={startClose}
             role="menu"
@@ -177,11 +207,12 @@ export default function Header() {
               <button
                 key={i}
                 onClick={() => {
+                  cancelClose()
                   setOpen(false)
                   if (it.href) go(it.href)
                   else it.onClick?.()
                 }}
-                className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-sm"
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-sm transition-colors focus:bg-slate-100 dark:focus:bg-slate-800 focus:outline-none"
                 role="menuitem"
               >
                 {it.label}
@@ -196,7 +227,6 @@ export default function Header() {
   // Route menus to their owning site (absolute URLs)
   const findProItems = [
     { label: 'Post a Job',            href: toMain('/post-job') },
-    { label: 'Emergency Request',     href: toMain('/emergency') },
     { label: 'Search for a Pro',      href: toMain('/find-pro') },
     { label: 'How it Works',          href: toMain('/how-it-works') },
   ]
@@ -240,13 +270,14 @@ export default function Header() {
             active={findProActive}
           />
           <HoverDrop
-            label="Find Work"
+            label="For Pros"
             keyName="work"
             open={openFindWork}
             setOpen={setOpenFindWork}
             items={findWorkItems}
             active={findWorkActive}
           />
+          <NavA href="/teams">Rushr Teams</NavA>
           <HoverDrop
             label="More"
             keyName="more"

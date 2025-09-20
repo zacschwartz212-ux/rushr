@@ -18,49 +18,36 @@ export default function HowItWorksForProsPage(){
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8 mt-8">
 
-      {/* Hero */}
-      <section className="section">
-        <div className="card relative overflow-hidden p-8 md:p-10">
-          {/* soft green glows */}
-          <div className="pointer-events-none absolute inset-0">
-            <div
-              className="absolute -top-28 -left-28 w-[520px] h-[520px] rounded-full opacity-80"
-              style={{ background: 'radial-gradient(closest-side, rgba(16,185,129,0.18), transparent 70%)' }}
-            />
-            <div
-              className="absolute -bottom-36 -right-20 w-[420px] h-[420px] rounded-full opacity-80"
-              style={{ background: 'radial-gradient(closest-side, rgba(52,211,153,0.14), transparent 70%)' }}
-            />
+      {/* Header */}
+      <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+              <svg className="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold text-slate-900">How Rushr Works for Contractors</h1>
+              <p className="text-slate-600 text-sm mt-0.5">Your complete guide to finding work and growing your business</p>
+            </div>
           </div>
-
-          <div className="relative">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-medium shadow-soft ring-1 ring-emerald-200 backdrop-blur dark:bg-white/10 dark:text-emerald-100 dark:ring-emerald-700">
-              <span className="inline-block h-2 w-2 rounded-full bg-primary" />
-              Pro guide
-            </div>
-
-            <h1 className="mt-3 text-3xl md:text-4xl font-bold text-ink dark:text-white">
-              How Rushr works for contractors
-            </h1>
-            <p className="mt-2 max-w-2xl text-slate-700 dark:text-slate-300">
-              Find work without the noise. Bid clearly, win fairly, and keep everything—from
-              messages to documents—in one place. Rushr is free to use; a small success fee is paid after a completed job. Signals is optional.
-            </p>
-
-            <div className="mt-5 flex flex-wrap items-center gap-2">
-              <button onClick={()=>go('/jobs')} className="btn-primary">Browse jobs</button>
-              <Link href="/signals" className="btn btn-outline">Learn about Signals</Link>
-            </div>
+          <div className="flex items-center gap-3">
+            <button onClick={()=>go('/jobs')} className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors">Browse Jobs</button>
+            <Link href="/signals" className="border border-emerald-600 text-emerald-600 px-4 py-2 rounded-lg font-medium hover:bg-emerald-600 hover:text-white transition-colors">Learn Signals</Link>
           </div>
         </div>
       </section>
 
       {/* 4-step flow */}
       <section className="section">
-        <h2 className="text-xl font-semibold text-ink dark:text-white mb-3">The 4-step flow</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">How It Works</h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">Follow these four simple steps to start finding and winning emergency service jobs through Rushr</p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Step
             n={1}
             title="Set up your profile"
@@ -69,32 +56,35 @@ export default function HowItWorksForProsPage(){
           />
           <Step
             n={2}
-            title="Find work (or get alerted)"
-            body="Browse new jobs in your area or turn on Signals to get real-time alerts from inspections, permits, licenses & violations that match your rules."
-            bullets={['Zip + category filters', 'Instant alerts with Signals', 'No pay-to-message']}
+            title="Find emergency work"
+            body="Browse urgent jobs in your area or turn on Signals to get real-time alerts from inspections, permits, licenses & violations that match your rules."
+            bullets={['Emergency jobs only', 'Instant alerts with Signals', 'No pay-to-message']}
           />
           <Step
             n={3}
-            title="Bid clearly"
-            body="Use line items and notes so homeowners can compare apples-to-apples. Fast, specific replies and photos help you stand out."
-            bullets={['Itemized quote builder', 'Attach photos/docs', 'ETA & warranty details']}
+            title="Respond immediately"
+            body="Use line items and notes so homeowners can compare apples-to-apples. Fast emergency response and immediate availability help you win."
+            bullets={['Immediate response quotes', 'Attach photos/docs', 'Emergency availability']}
           />
           <Step
             n={4}
-            title="Win, deliver, grow"
-            body="Schedule, message, and keep records in one thread. Earn reviews and use 1-click rehire to stay top-of-mind for past clients."
-            bullets={['In-thread scheduling', 'Receipts & job history', '1-click rehire']}
+            title="Deliver fast, grow"
+            body="Handle emergency repairs quickly and keep records in one thread. Earn reviews and use 1-click rehire for future emergencies."
+            bullets={['Emergency response', 'Receipts & job history', '1-click rehire']}
           />
         </div>
       </section>
 
       {/* Make your profile stand out */}
       <section className="section">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Build a Winning Profile</h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">Homeowners hire faster when your profile answers their top questions at a glance. Here's what makes profiles successful.</p>
+        </div>
         <div className="card p-6">
-          <h3 className="text-lg font-semibold text-ink dark:text-white">Make your profile stand out</h3>
-          <p className="mt-2 text-slate-700 dark:text-slate-300">
-            Homeowners hire faster when your profile answers their top questions at a glance.
-          </p>
+          <div className="text-center mb-6">
+            <h3 className="text-lg font-semibold text-slate-900">Profile Essentials</h3>
+          </div>
 
           <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <CheckCard icon="🧾" title="Licensing & insurance" text="Upload docs to earn visible badges and build trust." />
@@ -109,11 +99,14 @@ export default function HowItWorksForProsPage(){
 
       {/* Winning bids (what homeowners compare) */}
       <section className="section">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Win More Bids</h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">Our side-by-side comparison view highlights clarity and completeness. These areas consistently win jobs.</p>
+        </div>
         <div className="card p-6">
-          <h3 className="text-lg font-semibold text-ink dark:text-white">What homeowners compare</h3>
-          <p className="mt-2 text-slate-700 dark:text-slate-300">
-            Our side-by-side view highlights clarity and completeness. These areas consistently win jobs:
-          </p>
+          <div className="text-center mb-6">
+            <h3 className="text-lg font-semibold text-slate-900">What Homeowners Compare</h3>
+          </div>
 
           <div className="mt-4 grid lg:grid-cols-3 gap-4">
             <CompareCard
@@ -126,10 +119,10 @@ export default function HowItWorksForProsPage(){
             />
             <CompareCard
               icon="⏱️"
-              title="Speed & communication"
+              title="Emergency response speed"
               points={[
-                'Respond quickly with specifics and next steps',
-                'Offer a couple of time windows for walkthroughs',
+                'Respond within minutes with immediate availability',
+                'Offer same-day or next-hour emergency service',
               ]}
             />
             <CompareCard
@@ -152,25 +145,56 @@ export default function HowItWorksForProsPage(){
 
       {/* Signals — concise, value-first (optional but recommended) */}
       <section className="section">
-        <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-6 dark:border-emerald-900/40 dark:bg-emerald-900/10">
-          <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Signals (pro feature)</div>
-          <h3 className="text-lg font-semibold text-ink dark:text-white mt-1">Be first to the lead—before they reach out</h3>
-          <p className="mt-1 text-slate-700 dark:text-slate-300">
-            Signals watches inspection failures, permits, licenses, and violations in your state.
-            Build rules by category, jurisdiction, and keywords to get instant, actionable alerts—so you quote first.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Link href="/signals" className="btn btn-ghost">How Signals works</Link>
-            <button onClick={()=>go('/signals/dashboard')} className="btn btn-outline">Open Signals dashboard</button>
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Get Ahead with Signals</h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">Be the first to know about new opportunities before homeowners even post jobs</p>
+        </div>
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 relative overflow-hidden">
+          <div className="absolute top-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
+            <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+            </svg>
+            Pro Feature
+          </div>
+          <div className="relative">
+            <h3 className="text-xl font-bold text-slate-900 mb-3">Be First to the Lead</h3>
+            <p className="text-slate-700 mb-4 text-lg">
+              Signals monitors inspection failures, permits, licenses, and violations in your state.
+              Build custom rules by category, jurisdiction, and keywords to get instant alerts—so you can quote first.
+            </p>
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-white rounded-lg p-4 border border-emerald-200">
+                <div className="font-semibold text-slate-900 mb-1">🔍 Real-time Monitoring</div>
+                <div className="text-sm text-slate-600">Watch for failed inspections and violations automatically</div>
+              </div>
+              <div className="bg-white rounded-lg p-4 border border-emerald-200">
+                <div className="font-semibold text-slate-900 mb-1">⚡ Instant Alerts</div>
+                <div className="text-sm text-slate-600">Get notified the moment opportunities match your criteria</div>
+              </div>
+              <div className="bg-white rounded-lg p-4 border border-emerald-200">
+                <div className="font-semibold text-slate-900 mb-1">🎯 Custom Rules</div>
+                <div className="text-sm text-slate-600">Set filters for location, category, and specific keywords</div>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/signals" className="btn btn-outline border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white">Learn How Signals Works</Link>
+              <button onClick={()=>go('/signals/dashboard')} className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors">Open Signals Dashboard</button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Quick-start checklist */}
       <section className="section">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Get Started in 10 Minutes</h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">Follow this quick checklist to set up your profile and start finding work right away</p>
+        </div>
         <div className="card p-6">
-          <h3 className="text-lg font-semibold text-ink dark:text-white">Your 10-minute quick start</h3>
-          <div className="mt-3 grid md:grid-cols-2 gap-3">
+          <div className="text-center mb-6">
+            <h3 className="text-lg font-semibold text-slate-900">Quick Start Checklist</h3>
+          </div>
+          <div className="mt-3 grid md:grid-cols-2 gap-4">
             <TipCard n={1} title="Complete profile basics" lines={['Upload license/insurance', 'Add specialties & service area']} />
             <TipCard n={2} title="Set default quote template" lines={['Line items & standard notes', 'Warranty & exclusions']} />
             <TipCard n={3} title="Browse today’s jobs" lines={['Filter by ZIP & category', 'Shortlist a few to bid now']} />
@@ -178,26 +202,47 @@ export default function HowItWorksForProsPage(){
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <button onClick={()=>go('/jobs')} className="btn-primary">Browse jobs</button>
-            <button onClick={()=>go('/settings')} className="btn btn-outline">Edit profile</button>
+            <button onClick={()=>go('/jobs')} className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors">Browse jobs</button>
+            <button onClick={()=>go('/settings')} className="border border-emerald-600 text-emerald-600 px-4 py-2 rounded-lg font-medium hover:bg-emerald-600 hover:text-white transition-colors">Edit profile</button>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="section">
-        <div className="card p-6 md:p-8 text-center">
-          <h3 className="text-xl md:text-2xl font-semibold text-ink dark:text-white">
-            Ready to land your next job?
-          </h3>
-          <p className="mt-2 text-slate-700 dark:text-slate-300">
-            Start with today’s postings or enable Signals to jump the line.
-          </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-            <button onClick={()=>go('/jobs')} className="btn-primary">Browse jobs</button>
-            <Link href="/signals" className="btn btn-outline">Learn about Signals</Link>
+        <div className="bg-gradient-to-r from-emerald-50 to-emerald-100/50 rounded-2xl border border-emerald-200 p-8 text-center">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
+              Ready to Start Finding Work?
+            </h2>
+            <p className="text-slate-700 mb-6 text-lg">
+              Join thousands of contractors already using Rushr to grow their business with quality emergency service jobs.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+              <button onClick={()=>go('/jobs')} className="bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700 transition-colors w-full sm:w-auto">Browse Available Jobs</button>
+              <Link href="/signals" className="border border-emerald-600 text-emerald-600 px-6 py-3 rounded-lg font-medium hover:bg-emerald-600 hover:text-white transition-colors w-full sm:w-auto">Explore Signals</Link>
+            </div>
+            <div className="flex items-center justify-center gap-6 text-sm text-slate-600">
+              <div className="flex items-center gap-2">
+                <svg className="h-4 w-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                Free to use
+              </div>
+              <div className="flex items-center gap-2">
+                <svg className="h-4 w-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                Small success fee only
+              </div>
+              <div className="flex items-center gap-2">
+                <svg className="h-4 w-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+                Signals optional
+              </div>
+            </div>
           </div>
-          <p className="mt-3 text-xs text-slate-500">Free to use. Small success fee after completion. Signals is optional.</p>
         </div>
       </section>
     </div>

@@ -4,7 +4,6 @@ import React, { Suspense, useEffect } from 'react'
 import { AppProvider } from '../lib/state'
 import { useSearchParams } from 'next/navigation'
 import { openAuth as openAuthModal } from '../components/AuthModal'
-import DemoAuthSwitcher from '../components/DemoAuthSwitcher'
 
 /** Only this tiny component touches useSearchParams, wrapped in <Suspense>. */
 function SP() {
@@ -23,7 +22,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <SP />
       </Suspense>
       {children}
-      <DemoAuthSwitcher />
     </AppProvider>
   )
 }

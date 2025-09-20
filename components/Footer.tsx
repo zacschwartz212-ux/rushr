@@ -93,10 +93,10 @@ export default function Footer() {
             <li><FLink href={toMain('/')}>Home</FLink></li>
             <li><FLink href={toMain('/how-it-works')}>How It Works</FLink></li>
             <li><FLink href={toPro('/find-work/how-it-works')}>How it Works For Pros</FLink></li>
+            <li><FLink href={toMain('/teams')}>Rushr Teams</FLink></li>
             <li><FLink href={toMain('/find-pro')}>Search For A Pro</FLink></li>
             <li><FLink href={toPro('/jobs')}>Browse Jobs</FLink></li>
               <li><FLink href={toMain('/post-job')}>Post a Job</FLink></li>
-    <li><FLink href={toMain('/post-job/emergency')}>Emergency Post</FLink></li>
             <li><FLink href={toPro('/signals')}>Signals</FLink></li>
           </ul>
         </div>

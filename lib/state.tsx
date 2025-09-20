@@ -252,7 +252,9 @@ export function useApp(): AppContextValue {
 
 /* ======================= Static demo data ======================= */
 const STATIC_CATEGORIES: string[] = [
-  'Electrical','HVAC','Roofing','Plumbing','Carpentry','General','Landscaping'
+  'Electrical','HVAC','Roofing','Plumbing','Carpentry','General','Landscaping',
+  'Locksmith','Garage Door','Glass Repair','Appliance Repair','Handyman',
+  'Fencing','Gas','Snow Removal','Security','Water Damage','Drywall'
 ]
 
 const STATIC_CONTRACTORS: Contractor[] = [

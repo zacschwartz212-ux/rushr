@@ -16,6 +16,9 @@ import {
   AlertTriangle,
   Clock,
   ChevronRight,
+  Siren,
+  Battery,
+  Zap,
 } from 'lucide-react'
 
 /* ----------------------------- tiny helpers ----------------------------- */
@@ -76,11 +79,16 @@ function timeUntil(iso: string) {
 type Job = {
   id: string
   title: string
-  status: 'Open' | 'Reviewing' | 'Scheduled' | 'Completed'
-  quotes: number
-  unread: number
+  status: 'Pending' | 'Confirmed' | 'In Progress' | 'Completed'
+  proName?: string
+  hourlyRate?: number
+  estimatedDuration?: string
+  priority: 'Emergency' | 'Urgent' | 'Standard'
   nextAppt?: string // ISO
-  category: 'Electrical'|'HVAC'|'Roofing'|'Plumbing'|'Carpentry'|'General'|'Landscaping'
+  category: 'Electrical'|'HVAC'|'Roofing'|'Plumbing'|'Carpentry'|'General'|'Landscaping'|'Auto'|'Locksmith'
+  totalCost?: number
+  startTime?: string
+  endTime?: string
 }
 type Conversation = { id: string; with: string; jobId?: string; preview: string; unread: number; when: string }
 type CompletenessField = { key:string; label:string; weight:number; done:boolean; href:string; icon:React.ReactNode }
@@ -89,17 +97,58 @@ type CompletenessField = { key:string; label:string; weight:number; done:boolean
 export default function HomeownerDashboardPage() {
   // ---- mock data (swap with API later) ----
   const jobs: Job[] = [
-    { id:'J-1031', title:'Boiler no heat', status:'Scheduled', quotes:3, unread:0, nextAppt:new Date(Date.now()+3.6e6*5).toISOString(), category:'HVAC' },
-    { id:'J-1029', title:'AC not cooling', status:'Open', quotes:1, unread:2, category:'HVAC' },
-    { id:'J-1023', title:'Water heater install', status:'Reviewing', quotes:2, unread:0, category:'Plumbing' },
+    {
+      id:'J-1031',
+      title:'Boiler no heat',
+      status:'Confirmed',
+      proName:'Mike Rodriguez',
+      hourlyRate:125,
+      estimatedDuration:'2-3 hours',
+      priority:'Emergency',
+      nextAppt:new Date(Date.now()+3.6e6*5).toISOString(),
+      category:'HVAC'
+    },
+    {
+      id:'J-1029',
+      title:'AC not cooling',
+      status:'In Progress',
+      proName:'Sarah Chen',
+      hourlyRate:110,
+      estimatedDuration:'1-2 hours',
+      priority:'Emergency',
+      category:'HVAC',
+      startTime: new Date(Date.now()-1.8e6).toISOString()
+    },
+    {
+      id:'J-1023',
+      title:'Kitchen faucet leak',
+      status:'Completed',
+      proName:'David Park',
+      hourlyRate:95,
+      priority:'Urgent',
+      category:'Plumbing',
+      totalCost:285,
+      startTime: new Date(Date.now()-7.2e6).toISOString(),
+      endTime: new Date(Date.now()-3.6e6).toISOString()
+    },
+    {
+      id:'J-1025',
+      title:'Car lockout',
+      status:'Completed',
+      proName:'Alex Miller',
+      hourlyRate:85,
+      priority:'Emergency',
+      category:'Auto',
+      totalCost:125
+    }
   ]
   const conversations: Conversation[] = [
-    { id:'C1', with:'Chill Masters HVAC', jobId:'J-1029', preview:'We can swing by between 2–4p. Can you share the model tag?', unread:2, when:'15m' },
-    { id:'C2', with:'RapidFix Plumbing', jobId:'J-1023', preview:'Estimate attached. We can do Friday morning.', unread:0, when:'1d' },
+    { id:'C1', with:'Mike Rodriguez (HVAC)', jobId:'J-1031', preview:'On my way! ETA 15 minutes. I have all the parts needed.', unread:1, when:'8m' },
+    { id:'C2', with:'Sarah Chen (HVAC)', jobId:'J-1029', preview:'Job completed. Your AC is running great! Invoice sent.', unread:0, when:'2h' },
   ]
   const savedPros = [
-    { id:'P-220', name:'Chill Masters HVAC', rating:4.9, jobs:128, distance:'1.8mi', tags:['Top Rated','Quick replies'] },
-    { id:'P-114', name:'RapidFix Plumbing', rating:4.8, jobs:203, distance:'3.2mi', tags:['Neighborhood favorite'] },
+    { id:'P-220', name:'Mike Rodriguez', rating:4.9, jobs:128, distance:'1.8mi', tags:['Emergency specialist','Available now'] },
+    { id:'P-114', name:'Sarah Chen', rating:4.8, jobs:203, distance:'3.2mi', tags:['HVAC expert','Fast response'] },
   ]
   const completeness: CompletenessField[] = [
     { key:'email', label:'Verify email', weight:15, done:true,  href:'/settings', icon:<ShieldCheck className="h-4 w-4" /> },
@@ -107,7 +156,7 @@ export default function HomeownerDashboardPage() {
     { key:'address', label:'Add property address', weight:20, done:true, href:'/settings/addresses', icon:<MapPin className="h-4 w-4" /> },
     { key:'avatar', label:'Profile photo', weight:10, done:false, href:'/settings', icon:<UserRound className="h-4 w-4" /> },
     { key:'prefs', label:'Contact preferences', weight:15, done:true, href:'/settings', icon:<MessageSquare className="h-4 w-4" /> },
-    { key:'first', label:'Post first job', weight:25, done:true, href:'/post-job', icon:<FileText className="h-4 w-4" /> },
+    { key:'first', label:'Book first emergency service', weight:25, done:true, href:'/post-job', icon:<FileText className="h-4 w-4" /> },
   ]
 
   // ---- computed UI state ----
@@ -117,45 +166,45 @@ export default function HomeownerDashboardPage() {
     return Math.round((done/total)*100)
   },[completeness])
 
-  const upcoming = useMemo(()=> jobs.filter(j=>j.status==='Scheduled' && j.nextAppt).slice(0,3),[jobs])
+  const upcoming = useMemo(()=> jobs.filter(j=>j.status==='Confirmed' && j.nextAppt).slice(0,3),[jobs])
 
   // smart next step (simple rules; expand later)
   const nextStep = useMemo(()=>{
-    const hasOpen = jobs.find(j=>j.status==='Open')
-    if (hasOpen && hasOpen.unread>0) return {
-      title:'Reply to new messages',
-      desc:`${hasOpen.unread} unread on “${hasOpen.title}”`,
-      href:`/messages?job=${hasOpen.id}`,
-      icon:<MessageSquare className="h-4 w-4" />,
+    const pending = jobs.find(j=>j.status==='Pending')
+    if (pending) return {
+      title:'Pro is being assigned',
+      desc:`Emergency response for "${pending.title}" - ETA soon`,
+      href:`/jobs/${pending.id}`,
+      icon:<Clock className="h-4 w-4" />,
       tone:'amber' as const
     }
-    const lowQuotes = jobs.find(j=>j.status==='Open' && j.quotes < 2)
-    if (lowQuotes) return {
-      title:'Invite more pros',
-      desc:`Only ${lowQuotes.quotes} quote(s) on “${lowQuotes.title}”`,
-      href:`/find-pro?category=${encodeURIComponent(lowQuotes.category)}`,
-      icon:<Sparkles className="h-4 w-4" />,
-      tone:'emerald' as const
+    const inProgress = jobs.find(j=>j.status==='In Progress')
+    if (inProgress) return {
+      title:'Service in progress',
+      desc:`${inProgress.proName} is working on "${inProgress.title}"`,
+      href:`/jobs/${inProgress.id}`,
+      icon:<Zap className="h-4 w-4" />,
+      tone:'blue' as const
     }
     if (upcoming[0]) return {
       title:'Prepare for your appointment',
-      desc:`Access notes, pets, parking—“${upcoming[0].title}”`,
+      desc:`${upcoming[0].proName} arriving soon for "${upcoming[0].title}"`,
       href:`/jobs/${upcoming[0].id}`,
       icon:<CalendarDays className="h-4 w-4" />,
       tone:'blue' as const
     }
     return {
-      title:'Start a new project',
-      desc:'Post once, compare quotes fast',
-      href:'/post-job',
-      icon:<FileText className="h-4 w-4" />,
+      title:'Need emergency help?',
+      desc:'Get connected with verified pros instantly',
+      href:'/post-job?urgent=1',
+      icon:<Siren className="h-4 w-4" />,
       tone:'emerald' as const
     }
   },[jobs, upcoming])
 
   const kpis = {
-    active: jobs.filter(j=>['Open','Reviewing','Scheduled'].includes(j.status)).length,
-    quotes: jobs.reduce((a,b)=>a+b.quotes,0),
+    active: jobs.filter(j=>['Pending','Confirmed','In Progress'].includes(j.status)).length,
+    completed: jobs.filter(j=>j.status==='Completed').length,
     unread: conversations.reduce((a,b)=>a+b.unread,0),
     saved: savedPros.length
   }
@@ -168,17 +217,17 @@ export default function HomeownerDashboardPage() {
           Dashboard <Badge>Homeowner</Badge>
         </h1>
         <div className="flex gap-2">
-          <Link href="/post-job" className="btn-primary">Post a Job</Link>
+          <Link href="/post-job?urgent=1" className="btn-primary">Emergency Help</Link>
           <Link href="/find-pro" className="btn">Find a Pro</Link>
         </div>
       </div>
 
       {/* KPIs + Next step */}
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">
-        <StatCard label="Active Jobs" value={kpis.active} hint="Open, reviewing, scheduled" icon={<FileText className="h-4 w-4" />} />
-        <StatCard label="Quotes" value={kpis.quotes} hint="Total across active jobs" tone="blue" icon={<Sparkles className="h-4 w-4" />} />
-        <StatCard label="Unread" value={kpis.unread} hint="Messages" tone="amber" icon={<MessageSquare className="h-4 w-4" />} />
-        <StatCard label="Saved Pros" value={kpis.saved} hint="Quick rehire" tone="rose" icon={<Star className="h-4 w-4" />} />
+        <StatCard label="Active Services" value={kpis.active} hint="Pending, confirmed, in progress" icon={<Siren className="h-4 w-4" />} />
+        <StatCard label="Completed" value={kpis.completed} hint="Total completed services" tone="blue" icon={<CheckCircle2 className="h-4 w-4" />} />
+        <StatCard label="Messages" value={kpis.unread} hint="Unread messages" tone="amber" icon={<MessageSquare className="h-4 w-4" />} />
+        <StatCard label="Trusted Pros" value={kpis.saved} hint="Quick booking" tone="rose" icon={<Star className="h-4 w-4" />} />
       </section>
 
       <section className="grid grid-cols-1 gap-4 xl:grid-cols-3">
@@ -226,7 +275,7 @@ export default function HomeownerDashboardPage() {
                   <div>
                     <div className="font-medium text-ink dark:text-white">{u.title}</div>
                     <div className="text-xs text-slate-600 flex items-center gap-1">
-                      <CalendarDays className="h-4 w-4" /> in {timeUntil(u.nextAppt!)}
+                      <CalendarDays className="h-4 w-4" /> {u.proName} in {timeUntil(u.nextAppt!)}
                     </div>
                   </div>
                   <Link href={`/jobs/${u.id}`} className="btn btn-outline text-sm">Details</Link>
@@ -266,36 +315,47 @@ export default function HomeownerDashboardPage() {
       {/* Jobs table */}
       <section>
         <SectionTitle action={<Link href="/history" className="text-brand underline text-sm">View all</Link>}>
-          My jobs
+          Emergency services
         </SectionTitle>
         <div className="overflow-hidden rounded-2xl border border-slate-200">
           <table className="min-w-full text-sm">
             <thead className="bg-slate-50 text-slate-700">
               <tr>
-                <th className="px-4 py-3 text-left font-medium">Job</th>
+                <th className="px-4 py-3 text-left font-medium">Service</th>
                 <th className="px-4 py-3 text-left font-medium">Status</th>
-                <th className="px-4 py-3 text-left font-medium">Quotes</th>
-                <th className="px-4 py-3 text-left font-medium">Messages</th>
+                <th className="px-4 py-3 text-left font-medium">Pro</th>
+                <th className="px-4 py-3 text-left font-medium">Rate/Cost</th>
                 <th className="px-4 py-3 text-left font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white">
               {jobs.map(j=>(
                 <tr key={j.id} className="border-t border-slate-100">
-                  <td className="px-4 py-3">{j.title}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      {j.title}
+                      {j.priority === 'Emergency' && <span className="text-red-500 text-xs">🚨</span>}
+                    </div>
+                  </td>
                   <td className="px-4 py-3">
                     <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                      j.status==='Open' ? 'bg-slate-100 text-slate-700' :
-                      j.status==='Reviewing' ? 'bg-amber-100 text-amber-700' :
-                      j.status==='Scheduled' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
+                      j.status==='Pending' ? 'bg-amber-100 text-amber-700' :
+                      j.status==='Confirmed' ? 'bg-blue-100 text-blue-700' :
+                      j.status==='In Progress' ? 'bg-purple-100 text-purple-700' : 'bg-emerald-100 text-emerald-700'
                     }`}>{j.status}</span>
                   </td>
-                  <td className="px-4 py-3">{j.quotes}</td>
-                  <td className="px-4 py-3">{j.unread ? <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">{j.unread} unread</span> : '-'}</td>
+                  <td className="px-4 py-3">{j.proName || 'Assigning...'}</td>
+                  <td className="px-4 py-3">
+                    {j.totalCost ? `$${j.totalCost}` : j.hourlyRate ? `$${j.hourlyRate}/hr` : '-'}
+                  </td>
                   <td className="px-4 py-3">
                     <Link href={`/jobs/${j.id}`} className="text-brand underline">View</Link>
-                    <span className="mx-2 text-slate-300">|</span>
-                    <Link href={`/messages?job=${j.id}`} className="text-brand underline">Message</Link>
+                    {j.status === 'In Progress' && (
+                      <>
+                        <span className="mx-2 text-slate-300">|</span>
+                        <Link href={`/messages?job=${j.id}`} className="text-brand underline">Message</Link>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -304,11 +364,11 @@ export default function HomeownerDashboardPage() {
         </div>
       </section>
 
-      {/* Messages + Saved pros */}
+      {/* Messages + Trusted pros */}
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2 rounded-2xl border border-slate-200 p-4">
           <SectionTitle action={<Link href="/messages" className="text-brand underline text-sm">Open inbox</Link>}>
-            Recent messages
+            Pro messages
           </SectionTitle>
           <div className="divide-y divide-slate-100">
             {conversations.map(c=>(
@@ -328,7 +388,7 @@ export default function HomeownerDashboardPage() {
         </div>
         <div className="rounded-2xl border border-emerald-200 bg-white p-4">
           <SectionTitle action={<Link href="/find-pro" className="text-brand underline text-sm">Browse</Link>}>
-            Saved pros
+            Trusted pros
           </SectionTitle>
           <ul className="space-y-2">
             {savedPros.map(p=>(
@@ -343,7 +403,7 @@ export default function HomeownerDashboardPage() {
                   </div>
                   <div className="ml-auto flex gap-2">
                     <Link href={`/pros/${p.id}`} className="btn btn-outline text-sm">View</Link>
-                    <Link href={`/messages/new?to=${p.id}`} className="btn text-sm">Message</Link>
+                    <Link href={`/post-job?pro=${p.id}`} className="btn text-sm">Book</Link>
                   </div>
                 </div>
                 <div className="mt-2 flex flex-wrap gap-1">

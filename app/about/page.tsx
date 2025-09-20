@@ -16,15 +16,15 @@ export default function AboutPage(){
 
           <div className="relative">
             <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/50 dark:text-emerald-200">
-              Built for homeowners & contractors
+              Emergency services only
             </span>
             <h1 className="mt-3 text-3xl md:text-4xl font-bold text-ink dark:text-white tracking-tight">
-              Home projects, without the headache.
+              Emergency repairs, without the wait.
             </h1>
             <p className="mt-3 max-w-2xl text-slate-700 dark:text-slate-300">
-              Rushr connects homeowners with vetted local pros — fast, fair, and frustration-free.
-              Post in minutes, compare transparent quotes, and hire with confidence.
-              Pros get Signals to jump on high-intent work first.
+              Rushr connects homeowners with vetted emergency service pros — fast, urgent, and reliable.
+              Post your emergency in minutes, get immediate quotes, and hire contractors ready for same-day service.
+              Pros get Signals to respond to emergencies first.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
@@ -233,20 +233,20 @@ export default function AboutPage(){
       </div>
 
       <div className="flex flex-col items-start gap-2 text-sm">
-        <a href="mailto:hello@usehousecall.com" className="inline-flex items-center gap-2 rounded-md border bg-white px-3 py-2 hover:bg-emerald-50 dark:bg-slate-900 dark:border-slate-800">
+        <a href="mailto:hello@userushr.com" className="inline-flex items-center gap-2 rounded-md border bg-white px-3 py-2 hover:bg-emerald-50 dark:bg-slate-900 dark:border-slate-800">
           <svg viewBox="0 0 24 24" className="h-4 w-4 text-emerald-700" fill="none" stroke="currentColor">
             <circle cx="12" cy="12" r="9" strokeWidth="2"/>
             <circle cx="12" cy="12" r="4" strokeWidth="2"/>
             <path strokeWidth="2" d="M4.6 7.5l3.4 2.3M19.4 7.5l-3.4 2.3M4.6 16.5l3.4-2.3M19.4 16.5l-3.4-2.3"/>
           </svg>
-          Support hello@usehousecall.com
+          Support hello@userushr.com
         </a>
-        <a href="mailto:press@usehousecall.com" className="inline-flex items-center gap-2 rounded-md border bg-white px-3 py-2 hover:bg-emerald-50 dark:bg-slate-900 dark:border-slate-800">
+        <a href="mailto:press@userushr.com" className="inline-flex items-center gap-2 rounded-md border bg-white px-3 py-2 hover:bg-emerald-50 dark:bg-slate-900 dark:border-slate-800">
           <svg viewBox="0 0 24 24" className="h-4 w-4 text-emerald-700" fill="none" stroke="currentColor">
             <path strokeWidth="2" d="M3 11v2a2 2 0 002 2h2l5 4V5L7 9H5a2 2 0 00-2 2z"/>
             <path strokeWidth="2" d="M14 7l7-3v16l-7-3"/>
           </svg>
-          Media and partnerships press@usehousecall.com
+          Media and partnerships press@userushr.com
         </a>
       </div>
     </div>
